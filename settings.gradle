@@ -1,0 +1,3 @@
+rootProject.name = "Monet Compat"
+include ':library'
+include ':sample'

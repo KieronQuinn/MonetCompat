@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="monet_switch_height">72dp</dimen>
+    <dimen name="monet_switch_corners">24dp</dimen>
+    <dimen name="monet_switch_padding">12dp</dimen>
+    <dimen name="monet_switch_padding_start">24dp</dimen>
+    <dimen name="monet_switch_padding_end">16dp</dimen>
+    <dimen name="monet_toolbar_fake_elevation">8dp</dimen>
+</resources>

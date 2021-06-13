@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/materialFragment">
+
+    <fragment
+        android:id="@+id/materialFragment"
+        android:name="com.kieronquinn.app.monetcompatsample.ui.screens.material.MaterialFragment"
+        android:label="MaterialFragment"
+        tools:layout="@layout/fragment_material" />
+    <fragment
+        android:id="@+id/appCompatFragment"
+        android:name="com.kieronquinn.app.monetcompatsample.ui.screens.appcompat.AppCompatFragment"
+        android:label="AppCompatFragment"
+        tools:layout="@layout/fragment_appcompat" />
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.kieronquinn.app.monetcompatsample.ui.screens.list.ListFragment"
+        android:label="ListFragment"
+        tools:layout="@layout/fragment_list" />
+    <action
+        android:id="@+id/action_global_materialFragment"
+        app:destination="@id/materialFragment" />
+    <action
+        android:id="@+id/action_global_appCompatFragment"
+        app:destination="@id/appCompatFragment" />
+    <action
+        android:id="@+id/action_global_listFragment"
+        app:destination="@id/listFragment" />
+</navigation>

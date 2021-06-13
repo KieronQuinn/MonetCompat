@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="toolbar_elevation">8dp</dimen>
+    <dimen name="toolbar_padding_end">20dp</dimen>
+    <dimen name="debug_list_padding">8dp</dimen>
+    <dimen name="shared_axis_x_slide_distance">96dp</dimen>
+</resources>

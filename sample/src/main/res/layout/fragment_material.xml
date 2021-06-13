@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Note: Some of these Views are manually set to their Material equivalents
+     and have android:theme set to allow for Material & App Compat to work alongside each other.
+     You don't need to copy that. -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:id="@+id/root"
+    android:padding="@dimen/padding_16"
+    android:scrollbarStyle="outsideOverlay"
+    android:theme="@style/Theme.MonetCompat"
+    tools:context=".ui.activities.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?android:textColorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_accent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Accented text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Checkbox" />
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Radio 1" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radio_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Radio 2" />
+
+        </RadioGroup>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Switch" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Dialog"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonMD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show MD Dialog"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonMDBS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show MD Bottom Sheet"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Snackbar"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:indeterminate="true"
+            app:trackCornerRadius="8dp" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:indeterminate="false"
+            android:progress="50"
+            app:trackCornerRadius="8dp"
+            app:trackThickness="8dp" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:indeterminate="true"
+            app:trackCornerRadius="8dp"
+            app:trackThickness="8dp" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_add"
+                app:backgroundTint="?android:colorAccent"
+                app:tint="@android:color/white" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/extended_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Extended FAB"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:backgroundTint="?android:colorAccent"
+                app:icon="@drawable/ic_add"
+                app:iconTint="@android:color/white" />
+
+        </LinearLayout>
+
+        <com.kieronquinn.monetcompat.view.MonetSwitch
+            android:id="@+id/switch_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_16"
+            android:layout_marginTop="@dimen/padding_16"
+            android:text="Switch" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

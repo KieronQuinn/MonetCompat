@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MonetAppBarLayout">
+        <attr name="attachToInstance" format="boolean"/>
+        <attr name="toolbarId" format="reference"/>
+        <attr name="toolbarHeight" format="dimension"/>
+        <attr name="largeTitleTextAppearance" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="MonetSwitch">
+        <attr name="android:textAppearance" format="reference"/>
+        <attr name="android:textColor" format="color"/>
+        <attr name="android:text" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="MonetToolbar">
+        <attr name="extraPadding" format="dimension"/>
+        <attr name="applyPaddingToScrollingView" format="boolean"/>
+        <attr name="secondaryBackgroundAlpha" format="float"/>
+    </declare-styleable>
+</resources>

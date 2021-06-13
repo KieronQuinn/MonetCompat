@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="72dp"
+    android:layout_height="72dp"
+    android:padding="8dp"
+    android:clipToPadding="false"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="4dp"
+        android:id="@+id/item_debug_palette_background"
+        tools:backgroundTint="@color/material_on_primary_disabled"
+        android:background="@drawable/debug_palette_circle_background"/>
+
+</FrameLayout>

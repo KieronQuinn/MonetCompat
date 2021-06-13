@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root"
+    android:theme="@style/Theme.MonetCompat"
+    android:orientation="vertical">
+
+    <com.kieronquinn.monetcompat.view.MonetToolbar
+        android:id="@+id/fragment_debug_palette_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="@string/debug_palette"
+        app:extraPadding="@dimen/debug_list_padding"
+        tools:elevation="8dp"
+        tools:background="@color/accent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_debug_palette_recyclerview"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="@dimen/padding_16"
+        tools:listitem="@layout/row_debug_palette_colors" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.MonetCompat" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">@bool/light_status_nav</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/light_status_nav</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="colorControlActivated">@color/accent</item>
+    </style>
+    <style name="Theme.MonetCompat.Legacy" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">@bool/light_status_nav</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/light_status_nav</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="colorControlActivated">@color/accent</item>
+    </style>
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

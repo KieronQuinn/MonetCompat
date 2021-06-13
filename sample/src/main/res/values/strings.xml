@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Monet Compat Sample</string>
+    <string name="bottom_nav_material">Material</string>
+    <string name="bottom_nav_appcompat">App Compat</string>
+    <string name="bottom_nav_list">List</string>
+    <string name="debug_palette">Debug: View Palette</string>
+</resources>

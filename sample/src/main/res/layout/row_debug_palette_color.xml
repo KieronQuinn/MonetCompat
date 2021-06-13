@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/padding_16"
+    android:paddingTop="8dp"
+    android:paddingEnd="@dimen/padding_16"
+    android:clipToPadding="false"
+    android:paddingBottom="8dp">
+
+    <View
+        android:id="@+id/row_debug_palette_color_background"
+        android:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/debug_palette_circle_background"
+        tools:backgroundTint="@color/accent" />
+
+    <TextView
+        android:id="@+id/row_debug_palette_color_title"
+        android:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/padding_16"
+        android:layout_marginEnd="@dimen/padding_16"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_16"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="?android:textColorPrimary"
+        tools:text="Title" />
+
+</FrameLayout>
