@@ -26,7 +26,7 @@ fun MaterialDialog.applyMonet(applyNavigationBarColor: Boolean = false){
         view.contentLayout.setBackgroundColor(backgroundColor)
         view.buttonsLayout?.setBackgroundColor(backgroundColor)
         if(applyNavigationBarColor){
-            window.navigationBarColor = backgroundColor
+            window!!.navigationBarColor = backgroundColor
         }
     }
     val updateButtons = {

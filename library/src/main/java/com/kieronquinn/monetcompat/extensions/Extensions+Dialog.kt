@@ -31,7 +31,7 @@ fun AlertDialog.applyMonet(onDismiss: ((DialogInterface) -> Unit)? = null) = app
         getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(textColor)
         getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(textColor)
         getButton(AlertDialog.BUTTON_NEUTRAL)?.setTextColor(textColor)
-        window.decorView.background.apply {
+        window!!.decorView.background.apply {
             colorFilter = PorterDuffColorFilter(monet.getBackgroundColor(context), PorterDuff.Mode.SRC_ATOP)
         }
     }

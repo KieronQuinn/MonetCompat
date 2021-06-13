@@ -83,7 +83,7 @@ class MonetSwitch: SwitchCompat, MonetColorsChangedListener {
         isFocusable = true
         gravity = Gravity.CENTER_VERTICAL
         minHeight = resources.getDimension(R.dimen.monet_switch_height).toInt()
-        if(isLayoutRtl) {
+        if(layoutDirection == View.LAYOUT_DIRECTION_RTL) {
             setPadding(
                 monetSwitchPaddingEnd,
                 monetSwitchPadding,
