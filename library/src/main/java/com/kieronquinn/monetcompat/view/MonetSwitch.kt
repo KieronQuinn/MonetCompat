@@ -1,25 +1,20 @@
 package com.kieronquinn.monetcompat.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.Switch
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import com.kieronquinn.monetcompat.R
 import com.kieronquinn.monetcompat.core.MonetCompat
-import com.kieronquinn.monetcompat.extensions.isDarkMode
 import com.kieronquinn.monetcompat.extensions.toArgb
 import com.kieronquinn.monetcompat.extensions.views.overrideRippleColor
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener

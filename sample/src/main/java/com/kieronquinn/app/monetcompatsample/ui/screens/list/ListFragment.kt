@@ -13,7 +13,9 @@ import com.kieronquinn.app.monetcompatsample.R
 import com.kieronquinn.app.monetcompatsample.databinding.FragmentListBinding
 import com.kieronquinn.app.monetcompatsample.ui.base.BaseTabFragment
 import com.kieronquinn.monetcompat.extensions.views.applyMonetRecursively
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.roundToInt
 
@@ -57,8 +59,9 @@ class ListFragment: BaseTabFragment<FragmentListBinding>(FragmentListBinding::in
             }
             adapter = ListAdapter(context, viewModel.items)
         }
-        lifecycleScope.launchWhenResumed {
-            containerSharedViewModel.scrollToTopBus.onEach {
+        lifecycleScope.launch {
+            containerSharedViewModel.scrollToTopBus.collect {
+                if(!isResumed) return@collect
                 binding.root.smoothScrollToPosition(0)
             }
         }

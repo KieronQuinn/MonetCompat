@@ -218,8 +218,9 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
             onMenuItemClicked(it)
         }
         binding.appBar.setExpanded(!savedCollapsedState)
-        lifecycleScope.launchWhenResumed {
-            containerSharedViewModel.scrollToTopBus.onEach {
+        lifecycleScope.launch {
+            containerSharedViewModel.scrollToTopBus.collect {
+                if(!isResumed) return@collect
                 binding.appBar.setExpanded(true)
             }
         }

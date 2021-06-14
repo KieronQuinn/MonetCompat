@@ -17,6 +17,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.slider.Slider
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.kieronquinn.monetcompat.core.MonetCompat
@@ -45,6 +46,7 @@ sealed class MonetAutoThemeableViews(vararg val viewType: KClass<out View>) {
                     CHECKBOX,
                     CHECKBOX_MATERIAL,
                     CIRCULAR_PROGRESS_INDICATOR,
+                    EDIT_TEXT,
                     FLOATING_ACTION_BUTTON,
                     LINEAR_PROGRESS_INDICATOR,
                     PROGRESS_BAR,
@@ -55,13 +57,14 @@ sealed class MonetAutoThemeableViews(vararg val viewType: KClass<out View>) {
                     SEEKBAR,
                     SLIDER,
                     SWITCH,
-                    TEXT_INPUT_LAYOUT
+                    TEXT_INPUT
                 )
         }
 
         val ALL_NO_MATERIAL get() = arrayOf(
             BUTTON,
             CHECKBOX,
+            EDIT_TEXT,
             PROGRESS_BAR,
             RADIO_BUTTON,
             RECYCLER_VIEW,
@@ -82,21 +85,18 @@ sealed class MonetAutoThemeableViews(vararg val viewType: KClass<out View>) {
     object CHECKBOX : MonetAutoThemeableViews(CheckBox::class, AppCompatCheckBox::class)
     object CHECKBOX_MATERIAL : MonetAutoThemeableViews(MaterialCheckBox::class)
     object CIRCULAR_PROGRESS_INDICATOR : MonetAutoThemeableViews(CircularProgressIndicator::class)
+    object EDIT_TEXT : MonetAutoThemeableViews(EditText::class, AppCompatEditText::class)
     object FLOATING_ACTION_BUTTON : MonetAutoThemeableViews(FloatingActionButton::class, ExtendedFloatingActionButton::class)
     object LINEAR_PROGRESS_INDICATOR : MonetAutoThemeableViews(LinearProgressIndicator::class)
     object PROGRESS_BAR : MonetAutoThemeableViews(ProgressBar::class)
     object RADIO_BUTTON : MonetAutoThemeableViews(RadioButton::class, AppCompatRadioButton::class)
     object RADIO_BUTTON_MATERIAL : MonetAutoThemeableViews(MaterialRadioButton::class)
     object RECYCLER_VIEW : MonetAutoThemeableViews(RecyclerView::class)
-    /**
-     *  Note: [SCROLL_VIEW] is only supported by [ScrollView] and [HorizontalScrollView],
-     *  and only works on Android Q+ due to system limitations.
-     */
     object SCROLL_VIEW : MonetAutoThemeableViews(NestedScrollView::class, ScrollView::class, HorizontalScrollView::class)
     object SEEKBAR : MonetAutoThemeableViews(SeekBar::class, AppCompatSeekBar::class)
     object SLIDER : MonetAutoThemeableViews(Slider::class)
     object SWITCH : MonetAutoThemeableViews(SwitchCompat::class)
-    object TEXT_INPUT_LAYOUT : MonetAutoThemeableViews(TextInputLayout::class)
+    object TEXT_INPUT : MonetAutoThemeableViews(TextInputEditText::class, TextInputLayout::class)
 }
 
 /**
@@ -171,6 +171,7 @@ private fun View.applyMonetToGenericView() {
         is Slider -> applyMonet()
         is SwitchCompat -> applyMonet()
         is TextInputLayout -> applyMonet()
+        is TextInputEditText -> applyMonet()
         is MaterialButton -> applyMonet()
         is BottomNavigationView -> applyMonet()
         is BaseProgressIndicator<*> -> applyMonet()
@@ -179,6 +180,7 @@ private fun View.applyMonetToGenericView() {
         is ScrollView -> applyMonet()
         is HorizontalScrollView -> applyMonet()
         // == GENERICS ==
+        is EditText -> applyMonet()
         is Button -> applyMonet()
         is SeekBar -> applyMonet()
         is ProgressBar -> applyMonet()

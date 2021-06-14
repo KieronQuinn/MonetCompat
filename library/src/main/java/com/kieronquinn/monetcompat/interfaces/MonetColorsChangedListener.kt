@@ -1,8 +1,8 @@
 package com.kieronquinn.monetcompat.interfaces
 
 import com.kieronquinn.monetcompat.core.MonetCompat
-import dev.kdrag0n.monet.theme.DynamicColorScheme
 import com.kieronquinn.monetcompat.extensions.views.applyMonetRecursively
+import dev.kdrag0n.monet.theme.DynamicColorScheme
 
 interface MonetColorsChangedListener {
     /**

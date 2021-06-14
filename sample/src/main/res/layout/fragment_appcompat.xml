@@ -154,6 +154,11 @@
 
         </LinearLayout>
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_16" />
+
         <com.kieronquinn.monetcompat.view.MonetSwitch
             android:id="@+id/switch_2"
             android:layout_width="match_parent"

@@ -32,10 +32,10 @@ class MonetCompat private constructor(context: Context) {
         private const val TAG = "MonetCompat"
 
         /**
-         *  Boost the strength of the accent color when producing DynamicColorSchemes
+         *  Set the multiplier of the chroma of the generated colors, defaults to `1.0`
          */
         @JvmStatic
-        var boostAccentChroma = false
+        var chromaMultiplier = 1.0
 
         /**
          *  Enable some debug logging to the "MonetCompat" tag
@@ -183,7 +183,7 @@ class MonetCompat private constructor(context: Context) {
             if(debugLog){
                 Log.i(TAG, "Got wallpaper primary color #${Integer.toHexString(primaryColor)}")
             }
-            DynamicColorScheme(TargetColors.Default, primaryColor, boostAccentChroma)
+            DynamicColorScheme(TargetColors(chromaMultiplier), primaryColor, chromaMultiplier)
         }else{
             if(debugLog){
                 Log.w(TAG, "Unable to get primary color from wallpaper, using default app colors")
@@ -388,10 +388,10 @@ class MonetCompat private constructor(context: Context) {
     }
 
     /**
-     *  Get a [DynamicColorScheme] instance for the [defaultPrimaryColor] and specified [boostAccentChroma]
+     *  Get a [DynamicColorScheme] instance for the [defaultPrimaryColor] and specified [chromaMultiplier]
      */
     private fun getDefaultColors(): DynamicColorScheme {
-        return DynamicColorScheme(TargetColors.Default, defaultPrimaryColor!!, boostAccentChroma)
+        return DynamicColorScheme(TargetColors(chromaMultiplier), defaultPrimaryColor!!, chromaMultiplier)
     }
 
     /**

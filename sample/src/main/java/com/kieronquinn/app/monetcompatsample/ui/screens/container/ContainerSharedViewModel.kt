@@ -24,8 +24,8 @@ class ContainerSharedViewModelImpl: ContainerSharedViewModel() {
     private val _navigationBus = Channel<NavigationProvider.Navigation>(Channel.BUFFERED)
     override val navigationBus = _navigationBus.receiveAsFlow()
 
-    private val _scrollToTopBus = Channel<Unit>(Channel.BUFFERED)
-    override val scrollToTopBus = _scrollToTopBus.receiveAsFlow()
+    private val _scrollToTopBus = MutableSharedFlow<Unit>()
+    override val scrollToTopBus = _scrollToTopBus.asSharedFlow()
 
     private val _currentDestination = MutableStateFlow(0)
     override val currentDestination = _currentDestination.asSharedFlow()
@@ -74,7 +74,7 @@ class ContainerSharedViewModelImpl: ContainerSharedViewModel() {
 
     override fun scrollToTop() {
         viewModelScope.launch {
-            _scrollToTopBus.send(Unit)
+            _scrollToTopBus.emit(Unit)
         }
     }
 

@@ -4,10 +4,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import android.util.Log
-import android.view.Menu
 import android.view.View
-import android.view.ViewOutlineProvider
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ScrollingView
 import androidx.core.widget.NestedScrollView

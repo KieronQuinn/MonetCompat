@@ -2,7 +2,6 @@ package com.kieronquinn.monetcompat.extensions
 
 import android.R
 import android.content.res.ColorStateList
-import androidx.appcompat.app.AlertDialog
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton

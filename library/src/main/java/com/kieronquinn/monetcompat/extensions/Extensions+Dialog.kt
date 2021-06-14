@@ -7,7 +7,6 @@ import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AlertDialog
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.core.MonetDialogException
-import com.kieronquinn.monetcompat.extensions.views.overrideRippleColor
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
 import dev.kdrag0n.monet.theme.DynamicColorScheme
 

@@ -30,6 +30,7 @@ import com.kieronquinn.monetcompat.extensions.applyMonetLegacy
 import com.kieronquinn.monetcompat.extensions.views.MonetAutoThemeableViews
 import com.kieronquinn.monetcompat.extensions.views.applyMonetRecursively
 import com.kieronquinn.monetcompat.extensions.views.customThemeableView
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -107,7 +108,8 @@ class AppCompatFragment: BaseTabFragment<FragmentAppcompatBinding>(FragmentAppco
     private fun setupScrollView(savedScrollY: Int){
         binding.root.scrollTo(0, savedScrollY)
         lifecycleScope.launch {
-            containerSharedViewModel.scrollToTopBus.onEach {
+            containerSharedViewModel.scrollToTopBus.collect {
+                if(!isResumed) return@collect
                 binding.root.smoothScrollTo(0, 0)
             }
         }

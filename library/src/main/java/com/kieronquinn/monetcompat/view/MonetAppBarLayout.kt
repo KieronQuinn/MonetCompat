@@ -5,13 +5,15 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleableRes
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
@@ -65,6 +67,11 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
             return if(field != null) field
             else referencedToolbar
         }
+        set(value) {
+            field = value
+            //Update the title font
+            toolbar?.setTitleTypeface(typeface)
+        }
 
     private val _toolbar
         get() = toolbar!!
@@ -78,6 +85,7 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
         toolbarId?.let {
             val toolbar = findViewById<Toolbar>(it)
                 ?: throw MonetAppBarToolbarNotFoundException(it, resources.getResourceName(it))
+            toolbar.setTitleTypeface(typeface)
             toolbar
         } ?: run {
             throw MonetAppBarToolbarReferenceException()
@@ -115,6 +123,23 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
      */
     var isCollapsed: Boolean = false
 
+    var typeface: Typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+        set(value) {
+            field = value
+            post {
+                toolbar?.setTitleTypeface(typeface)
+            }
+        }
+
+    var typefaceExpanded = Typeface.DEFAULT
+        set(value) {
+            field = value
+            post {
+                collapsingToolbar.setExpandedTitleTypeface(field)
+                collapsingToolbar.setCollapsedTitleTypeface(field)
+            }
+        }
+
     /**
      *  Text color for the title
      */
@@ -136,6 +161,20 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
         attachToInstance = typedArray.getBoolean(R.styleable.MonetAppBarLayout_attachToInstance, true)
         toolbarId = typedArray.getResourceIdOrNull(R.styleable.MonetAppBarLayout_toolbarId)
         toolbarHeight = typedArray.getDimension(R.styleable.MonetAppBarLayout_toolbarHeight, defaultToolbarHeight)
+        typedArray.getResourceIdOrNull(R.styleable.MonetAppBarLayout_typeface)?.let {
+            typeface = ResourcesCompat.getFont(context, it) ?: typeface
+        } ?: run {
+            typedArray.getString(R.styleable.MonetAppBarLayout_typeface)?.let {
+                typeface = Typeface.create(it, Typeface.NORMAL)
+            }
+        }
+        typedArray.getResourceIdOrNull(R.styleable.MonetAppBarLayout_typefaceExpanded)?.let {
+            typefaceExpanded = ResourcesCompat.getFont(context, it) ?: typefaceExpanded
+        } ?: run {
+            typedArray.getString(R.styleable.MonetAppBarLayout_typefaceExpanded)?.let {
+                typefaceExpanded = Typeface.create(it, Typeface.NORMAL)
+            }
+        }
         typedArray.recycle()
     }
 
@@ -252,6 +291,8 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
         collapsingToolbar.apply {
             setExpandedTitleTextAppearance(R.style.CollapsingToolbarTextLargeTitle)
             setCollapsedTitleTextAppearance(R.style.CollapsingToolbarTextLargeTitle)
+            setExpandedTitleTypeface(typefaceExpanded)
+            setCollapsedTitleTypeface(typefaceExpanded)
         }
     }
 
@@ -331,6 +372,12 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
         val value = getResourceId(index, 0)
         return if (value == 0) null
         else value
+    }
+
+    private fun Toolbar.setTitleTypeface(typeface: Typeface){
+        (getChildAt(0) as? TextView)?.run {
+            setTypeface(typeface)
+        }
     }
 
     private class MonetAppBarToolbarReferenceException: Exception("You must declare app:toolbarId for MonetAppBarLayout to point to your toolbar, or set MonetAppBarLayout.toolbar")
