@@ -49,7 +49,7 @@ fun EditText.setCursorHandleTint(@ColorInt color: Int){
 @Suppress("DEPRECATION")
 private fun setCursorDrawableColor(editText: EditText, color: Int) {
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-        editText.textCursorDrawable.setTint(color)
+        editText.textCursorDrawable?.setTint(color)
         return
     }
     try {
@@ -83,13 +83,13 @@ private fun setHandlesColor(textView: TextView, @ColorInt color: Int) {
         val drLeft = GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, intArrayOf(color, color))
         drLeft.setSize(size, size)
         drLeft.cornerRadii = floatArrayOf(corner, corner, 0f, 0f, corner, corner, corner, corner)
-        textView.textSelectHandleLeft = InsetDrawable(drLeft, inset, 0, inset, inset)
+        textView.setTextSelectHandleLeft(InsetDrawable(drLeft, inset, 0, inset, inset))
 
         //right drawable
         val drRight = GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, intArrayOf(color, color))
         drRight.setSize(size, size)
         drRight.cornerRadii = floatArrayOf(0f, 0f, corner, corner, corner, corner, corner, corner)
-        textView.textSelectHandleRight = InsetDrawable(drRight, inset, 0, inset, inset)
+        textView.setTextSelectHandleRight(InsetDrawable(drRight, inset, 0, inset, inset))
 
         //middle drawable
         val drMiddle = GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, intArrayOf(color, color))
@@ -101,7 +101,7 @@ private fun setHandlesColor(textView: TextView, @ColorInt color: Int) {
         rotateDrawable.drawable = insetDrawable
         rotateDrawable.toDegrees = 45f
         rotateDrawable.level = 10000
-        textView.textSelectHandle = rotateDrawable
+        textView.setTextSelectHandle(rotateDrawable)
         return
     }
 
