@@ -22,7 +22,7 @@ import dev.kdrag0n.monet.theme.DynamicColorScheme
  *  background color has transparency of [secondaryBackgroundAlpha] (default 85%), allowing you to
  *  see the scrolled list content behind it. Elevation is also disabled.
  */
-class MonetToolbar: Toolbar, MonetColorsChangedListener {
+open class MonetToolbar: Toolbar, MonetColorsChangedListener {
 
     /**
      *  The alpha ratio of the [Toolbar] when there is a scrolled list showing under it. Defaults to

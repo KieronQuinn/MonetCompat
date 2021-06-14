@@ -25,7 +25,7 @@ import dev.kdrag0n.monet.theme.DynamicColorScheme
  *  its own background, tinted to Monet's colors, with the [Switch] thumb set to the same color,
  *  and the track a darker color. The background/track color changes depending on the switch state.
  */
-class MonetSwitch: SwitchCompat, MonetColorsChangedListener {
+open class MonetSwitch: SwitchCompat, MonetColorsChangedListener {
 
     constructor(context: Context): super(context, null)
 

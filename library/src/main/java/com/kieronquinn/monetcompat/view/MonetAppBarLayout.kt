@@ -37,7 +37,7 @@ import dev.kdrag0n.monet.theme.DynamicColorScheme
  *
  *  In code, you can set [toolbar] instead of declaring an ID.
  */
-class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
+open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
 
     companion object {
         /**
@@ -123,6 +123,9 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
      */
     var isCollapsed: Boolean = false
 
+    /**
+     *  The [Typeface] to use for the collapsed [Toolbar]
+     */
     var typeface: Typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
         set(value) {
             field = value
@@ -131,6 +134,9 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
             }
         }
 
+    /**
+     *  The [Typeface] to use for the expanded [CollapsingToolbarLayout]
+     */
     var typefaceExpanded = Typeface.DEFAULT
         set(value) {
             field = value
@@ -139,6 +145,8 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
                 collapsingToolbar.setCollapsedTitleTypeface(field)
             }
         }
+
+    var stateChangeListener: ((AppBarState) -> Unit)? = null
 
     /**
      *  Text color for the title
@@ -199,6 +207,7 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
             //Fully hide collapsing toolbar title
             -verticalOffset >= targetCollapseHeight -> {
                 setCollapsingToolbarTitleColor(0f)
+                stateChangeListener?.invoke(AppBarState.COLLAPSED)
                 isCollapsed = true
             }
             //Animation by using offset
@@ -207,8 +216,15 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
                 setCollapsingToolbarTitleColor(fraction)
                 isCollapsed = false
             }
+            //Fully expanded
+            verticalOffset == 0 -> {
+                stateChangeListener?.invoke(AppBarState.EXPANDED)
+                setCollapsingToolbarTitleColor(1f)
+                isCollapsed = false
+            }
             //Fully show collapsing toolbar title
             else -> {
+                stateChangeListener?.invoke(AppBarState.IDLE)
                 setCollapsingToolbarTitleColor(1f)
                 isCollapsed = false
             }
@@ -378,6 +394,10 @@ class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
         (getChildAt(0) as? TextView)?.run {
             setTypeface(typeface)
         }
+    }
+
+    enum class AppBarState {
+        COLLAPSED, EXPANDED, IDLE
     }
 
     private class MonetAppBarToolbarReferenceException: Exception("You must declare app:toolbarId for MonetAppBarLayout to point to your toolbar, or set MonetAppBarLayout.toolbar")
