@@ -472,7 +472,7 @@ class MonetCompat private constructor(context: Context) {
      */
     @RequiresApi(Build.VERSION_CODES.O_MR1)
     private fun WallpaperColors.getColorOptions(): List<Int> {
-        return arrayOf(primaryColor, secondaryColor, tertiaryColor).filterNot { it == null }.distinct().map { it.toArgb() }
+        return arrayOf(primaryColor, secondaryColor, tertiaryColor).filterNot { it == null }.distinct().map { it!!.toArgb() }
     }
 
     /**
