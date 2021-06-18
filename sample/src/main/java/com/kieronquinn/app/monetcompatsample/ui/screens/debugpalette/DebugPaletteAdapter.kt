@@ -107,7 +107,7 @@ class DebugPaletteAdapter(private val context: Context): RecyclerView.Adapter<De
 
     private fun MonetCompat.getThemeColors(context: Context): List<Pair<String, Int>> {
         return listOf(
-            Pair("Wallpaper Primary", wallpaperPrimaryColor),
+            Pair("Wallpaper", wallpaperPrimaryColor),
             Pair("Background", getBackgroundColor(context)),
             Pair("Background Secondary", getBackgroundColorSecondary(context)),
             Pair("Accent", getAccentColor(context)),

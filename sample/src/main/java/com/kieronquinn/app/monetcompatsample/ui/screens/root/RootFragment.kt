@@ -4,6 +4,10 @@ import android.app.ActivityOptions
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.kieronquinn.app.monetcompatsample.R
@@ -31,6 +35,15 @@ class RootFragment: BoundFragment<FragmentRootBinding>(FragmentRootBinding::infl
         super.onViewCreated(view, savedInstanceState)
         setupNavigation()
         setupBack()
+        setupInsets()
+    }
+
+    private fun setupInsets(){
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root){ view, insets ->
+            val navigationInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            view.updatePadding(left = navigationInsets.left, right = navigationInsets.right)
+            insets
+        }
     }
 
     private fun setupNavigation(){

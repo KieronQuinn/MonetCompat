@@ -4,4 +4,6 @@
     <string name="bottom_nav_appcompat">App Compat</string>
     <string name="bottom_nav_list">List</string>
     <string name="debug_palette">Debug: View Palette</string>
+    <string name="color_picker_title">Wallpaper Color Picker</string>
+    <string name="color_picker_unavailable">Wallpaper Color Picker unavailable for the currently selected wallpaper</string>
 </resources>

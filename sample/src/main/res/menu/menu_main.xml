@@ -3,4 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="@string/debug_palette"
         android:id="@+id/menu_debug_palette"/>
+    <item android:title="@string/color_picker_title"
+        android:id="@+id/menu_color_picker"/>
 </menu>

@@ -2,6 +2,8 @@ package com.kieronquinn.monetcompat.extensions
 
 import android.R
 import android.content.res.ColorStateList
+import android.graphics.Color
+import android.os.Build
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -15,7 +17,7 @@ import dev.kdrag0n.monet.theme.DynamicColorScheme
  *  Applies Monet colors to a MaterialDialog, this will *not* work before MonetCompat is
  *  initialized
  *  @param applyNavigationBarColor Set to true to apply the [MonetCompat.getBackgroundColor] color
- *  to the window navigation bar color (useful for Bottom Sheets)
+ *  to the window navigation bar color (useful for Bottom Sheets), only works on Android 8.1+
  */
 fun MaterialDialog.applyMonet(applyNavigationBarColor: Boolean = false){
     val monet = MonetCompat.getInstance()
@@ -25,7 +27,12 @@ fun MaterialDialog.applyMonet(applyNavigationBarColor: Boolean = false){
         view.contentLayout.setBackgroundColor(backgroundColor)
         view.buttonsLayout?.setBackgroundColor(backgroundColor)
         if(applyNavigationBarColor){
-            window!!.navigationBarColor = backgroundColor
+            //Light navigation background not supported on < 8.1
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                window?.navigationBarColor = backgroundColor
+            }else{
+                window?.navigationBarColor = Color.BLACK
+            }
         }
     }
     val updateButtons = {

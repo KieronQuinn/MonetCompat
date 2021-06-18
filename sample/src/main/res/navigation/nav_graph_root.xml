@@ -13,10 +13,17 @@
         <action
             android:id="@+id/action_containerFragment_to_debugPaletteFragment"
             app:destination="@id/debugPaletteFragment" />
+        <action
+            android:id="@+id/action_containerFragment_to_colorPickerBottomSheetFragment"
+            app:destination="@id/colorPickerBottomSheetFragment" />
     </fragment>
     <fragment
         android:id="@+id/debugPaletteFragment"
         android:name="com.kieronquinn.app.monetcompatsample.ui.screens.debugpalette.DebugPaletteFragment"
         android:label="DebugPaletteFragment"
         tools:layout="@layout/fragment_debug_palette" />
+    <dialog
+        android:id="@+id/colorPickerBottomSheetFragment"
+        android:name="com.kieronquinn.app.monetcompatsample.ui.screens.colorpicker.ColorPickerBottomSheetFragment"
+        android:label="ColorPickerBottomSheetFragment" />
 </navigation>

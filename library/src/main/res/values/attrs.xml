@@ -5,6 +5,7 @@
         <attr name="toolbarId" format="reference"/>
         <attr name="toolbarHeight" format="dimension"/>
         <attr name="largeTitleTextAppearance" format="dimension"/>
+        <attr name="largeTitlePaddingStart" format="dimension"/>
         <attr name="typeface" format="reference|string"/>
         <attr name="typefaceExpanded" format="reference|string"/>
     </declare-styleable>

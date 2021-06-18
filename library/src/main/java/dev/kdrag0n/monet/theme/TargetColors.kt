@@ -1,7 +1,7 @@
 package dev.kdrag0n.monet.theme
 
-import dev.kdrag0n.monet.colors.Color
 import dev.kdrag0n.monet.colors.Oklch
+import dev.kdrag0n.monet.colors.Color
 
 /*
  * Default target colors, conforming to Material You standards.
@@ -15,18 +15,38 @@ class TargetColors(
 ) : ColorScheme() {
     companion object {
         // Lightness from AOSP defaults
-        private const val L_0    = 1.00
-        private const val L_50   = 0.96
-        private const val L_100  = 0.91
-        private const val L_200  = 0.83
-        private const val L_300  = 0.74
-        private const val L_400  = 0.65
-        private const val L_500  = 0.56
-        private const val L_600  = 0.48
-        private const val L_700  = 0.39
-        private const val L_800  = 0.31
-        private const val L_900  = 0.22
-        private const val L_1000 = 0.00
+        private val LIGHTNESS_MAP = mapOf(
+            0    to 1.000,
+            10   to 0.988,
+            50   to 0.955,
+            100  to 0.913,
+            200  to 0.827,
+            300  to 0.741,
+            400  to 0.653,
+            500  to 0.562,
+            600  to 0.482,
+            700  to 0.394,
+            800  to 0.309,
+            900  to 0.222,
+            1000 to 0.000,
+        )
+
+        // Lightness map in CIELAB L*
+        val LSTAR_LIGHTNESS_MAP = mapOf(
+            0    to 100.0,
+            10   to  99.0,
+            50   to  95.0,
+            100  to  90.0,
+            200  to  80.0,
+            300  to  70.0,
+            400  to  60.0,
+            500  to  49.6,
+            600  to  40.0,
+            700  to  30.0,
+            800  to  20.0,
+            900  to  10.0,
+            1000 to   0.0,
+        )
 
         // Neutral chroma from Google's CAM16 implementation
         private const val NEUTRAL1_CHROMA = 0.0132
@@ -46,20 +66,11 @@ class TargetColors(
     override val accent3 = shadesWithChroma(ACCENT3_CHROMA)
 
     private fun shadesWithChroma(chroma: Double): Map<Int, Color> {
+        // Adjusted chroma
         val chromaAdj = chroma * chromaFactor
-        return mapOf(
-            0    to Oklch(L_0,    0.0),
-            50   to Oklch(L_50,   chromaAdj),
-            100  to Oklch(L_100,  chromaAdj),
-            200  to Oklch(L_200,  chromaAdj),
-            300  to Oklch(L_300,  chromaAdj),
-            400  to Oklch(L_400,  chromaAdj),
-            500  to Oklch(L_500,  chromaAdj),
-            600  to Oklch(L_600,  chromaAdj),
-            700  to Oklch(L_700,  chromaAdj),
-            800  to Oklch(L_800,  chromaAdj),
-            900  to Oklch(L_900,  chromaAdj),
-            1000 to Oklch(L_1000, 0.0),
-        )
+
+        return LIGHTNESS_MAP.map {
+            it.key to Oklch(it.value, chromaAdj)
+        }.toMap()
     }
 }

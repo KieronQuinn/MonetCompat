@@ -9,6 +9,7 @@ import com.kieronquinn.app.monetcompatsample.ui.screens.list.ListViewModelImpl
 import com.kieronquinn.app.monetcompatsample.ui.screens.material.MaterialViewModel
 import com.kieronquinn.app.monetcompatsample.ui.screens.root.RootSharedViewModel
 import com.kieronquinn.app.monetcompatsample.ui.screens.root.RootSharedViewModelImpl
+import com.kieronquinn.app.monetcompatsample.utils.PreferenceUtils
 import com.kieronquinn.monetcompat.core.MonetCompat
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -27,7 +28,7 @@ class MonetCompatSample: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        /**
+        /*
          *  Enables Android 8.0 and below support
          *  On some devices, the user will need to grant the READ_EXTERNAL_STORAGE permission
          *  for this to work, for convenience's sake in this sample we're just going to rely on
@@ -35,6 +36,15 @@ class MonetCompatSample: Application() {
          */
         MonetCompat.enablePaletteCompat()
         MonetCompat.debugLog = true
+
+        /*
+         *  This is completely optional - you only need to use the non-default one if you want the
+         *  user to be able to select from the 3 picked wallpaper colors in UI somewhere
+         */
+        MonetCompat.wallpaperColorPicker = {
+            val userPickedColor = PreferenceUtils.getSelectedColor(this)
+            it?.firstOrNull { color -> color == userPickedColor } ?: it?.firstOrNull()
+        }
 
         startKoin {
             androidContext(this@MonetCompatSample)

@@ -232,6 +232,11 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
                 rootSharedViewModel.navigateByDirections(
                     ContainerFragmentDirections.actionContainerFragmentToDebugPaletteFragment())
             }
+            R.id.menu_color_picker -> {
+                rootSharedViewModel.navigateByDirections(
+                    ContainerFragmentDirections.actionContainerFragmentToColorPickerBottomSheetFragment()
+                )
+            }
         }
         return true
     }
@@ -271,6 +276,7 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        if(!isResumed) return
         outState.putBoolean(KEY_COLLAPSED_STATE, binding.appBar.isCollapsed)
     }
 

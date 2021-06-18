@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.widget.TextView
 import androidx.annotation.ColorInt
@@ -18,6 +19,7 @@ import androidx.core.view.children
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.android.material.internal.CollapsingTextHelper
 import com.kieronquinn.monetcompat.R
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.extensions.getColorWithAlpha
@@ -33,18 +35,15 @@ import dev.kdrag0n.monet.theme.DynamicColorScheme
  *  the [Toolbar] background when not expanded.
  *
  *  In XML, you should declare `app:toolbarId="<your toolbar ID>"`, of the child toolbar of this view
- *  You should also have a [CollapsingToolbarLayout] as a direct child to this view.
+ *  You should also have a [MonetCollapsingToolbar] as a direct child to this view, if you want
+ *  the large title to not move on the x-axis, or you may use a normal [CollapsingToolbarLayout]
+ *  if you wish instead.
  *
  *  In code, you can set [toolbar] instead of declaring an ID.
+ *
+ *  To disable elevation on this view, set `app:elevation="0dp"` in your XML
  */
 open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
-
-    companion object {
-        /**
-         *  The vertical height of the fade animation based on the scroll offset
-         */
-        private const val ANIMATION_HEIGHT = 25
-    }
 
     private val monet by lazy {
         MonetCompat.getInstance()
@@ -146,7 +145,14 @@ open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
             }
         }
 
-    var stateChangeListener: ((AppBarState) -> Unit)? = null
+    private val largeTitlePaddingStartDefault by lazy {
+        resources.getDimension(R.dimen.monet_collapsing_toolbar_padding_start_default)
+    }
+
+    var largeTitlePaddingStart: Float? = null
+        get() {
+            return field ?: largeTitlePaddingStartDefault
+        }
 
     /**
      *  Text color for the title
@@ -169,6 +175,7 @@ open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
         attachToInstance = typedArray.getBoolean(R.styleable.MonetAppBarLayout_attachToInstance, true)
         toolbarId = typedArray.getResourceIdOrNull(R.styleable.MonetAppBarLayout_toolbarId)
         toolbarHeight = typedArray.getDimension(R.styleable.MonetAppBarLayout_toolbarHeight, defaultToolbarHeight)
+        largeTitlePaddingStart = typedArray.getDimension(R.styleable.MonetAppBarLayout_largeTitlePaddingStart, largeTitlePaddingStart!!)
         typedArray.getResourceIdOrNull(R.styleable.MonetAppBarLayout_typeface)?.let {
             typeface = ResourcesCompat.getFont(context, it) ?: typeface
         } ?: run {
@@ -196,64 +203,33 @@ open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
     }
 
     /**
-     *  The point at which to start the fade animation
+     *  The point at which the toolbar title switches from the collapsing toolbar to the toolbar,
+     *  with fade either way around it.
      */
-    private val targetAnimationStartHeight by lazy {
-        targetCollapseHeight - ANIMATION_HEIGHT
+    private val transitionPoint by lazy {
+        toolbarHeight
     }
 
     private val offsetListener = OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        val position = targetCollapseHeight + verticalOffset
         when {
-            //Fully hide collapsing toolbar title
-            -verticalOffset >= targetCollapseHeight -> {
-                setCollapsingToolbarTitleColor(0f)
-                stateChangeListener?.invoke(AppBarState.COLLAPSED)
-                isCollapsed = true
-            }
-            //Animation by using offset
-            -verticalOffset >= targetAnimationStartHeight -> {
-                val fraction = (targetCollapseHeight - (-verticalOffset)) / ANIMATION_HEIGHT.toFloat()
-                setCollapsingToolbarTitleColor(fraction)
-                isCollapsed = false
-            }
-            //Fully expanded
-            verticalOffset == 0 -> {
-                stateChangeListener?.invoke(AppBarState.EXPANDED)
+            position >= transitionPoint -> {
+                //Collapsible toolbar only
                 setCollapsingToolbarTitleColor(1f)
-                isCollapsed = false
             }
-            //Fully show collapsing toolbar title
-            else -> {
-                stateChangeListener?.invoke(AppBarState.IDLE)
-                setCollapsingToolbarTitleColor(1f)
-                isCollapsed = false
+            position < transitionPoint && position > 0 -> {
+                //Transitioning collapsing toolbar
+                collapsingToolbar.isTitleEnabled = true
+                setCollapsingToolbarTitleColor(position / toolbarHeight)
+            }
+            position < transitionPoint && position <= 0 -> {
+                //Transitioning toolbar
+                collapsingToolbar.isTitleEnabled = false
+                setToolbarTitleColor((-position) / toolbarHeight)
             }
         }
-        //Sets the Toolbar's title visibility via animation and also switches the current title
-        setToolbarTitleVisible(-verticalOffset >= targetCollapseHeight)
         //Show the toolbar background if the collapsing toolbar is anything but fully expanded
         setToolbarBackgroundState(verticalOffset != 0)
-    }
-
-
-    private var isToolbarTitleVisible = false
-    /**
-     *  Sets the visibility of the [Toolbar] title by animating it to/from [Color.TRANSPARENT].
-     *  In order for the [Toolbar] to have the title rather than the [CollapsingToolbarLayout],
-     *  we use [CollapsingToolbarLayout.isTitleEnabled]` = false`
-     */
-    private fun setToolbarTitleVisible(visible: Boolean){
-        if(visible == isToolbarTitleVisible) return
-        if(visible){
-            _toolbar.setToolbarTitleColor(Color.TRANSPARENT, textColorPrimary)
-            collapsingToolbar.isTitleEnabled = false
-        }else{
-            _toolbar.setToolbarTitleColor(textColorPrimary, Color.TRANSPARENT){
-                collapsingToolbar.isTitleEnabled = true
-                null
-            }
-        }
-        isToolbarTitleVisible = visible
     }
 
     /**
@@ -264,6 +240,14 @@ open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
         val collapsingToolbarTextColor = getColorWithAlpha(textColorPrimary, collapsingToolbarAlpha)
         collapsingToolbar.setExpandedTitleColor(collapsingToolbarTextColor)
         collapsingToolbar.setCollapsedTitleTextColor(collapsingToolbarTextColor)
+    }
+
+    /**
+     *  Sets the alpha of the [Toolbar]'s title by setting their color alph channel
+     */
+    private fun setToolbarTitleColor(toolbarTitleAlpha: Float){
+        val textColor = getColorWithAlpha(textColorPrimary, toolbarTitleAlpha)
+        toolbar?.setTitleTextColor(textColor)
     }
 
     private var isToolbarBackgroundVisible = false
@@ -309,6 +293,7 @@ open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
             setCollapsedTitleTextAppearance(R.style.CollapsingToolbarTextLargeTitle)
             setExpandedTitleTypeface(typefaceExpanded)
             setCollapsedTitleTypeface(typefaceExpanded)
+            (this as MonetCollapsingToolbar).largeTitlePaddingStart = this@MonetAppBarLayout.largeTitlePaddingStart
         }
     }
 
@@ -394,10 +379,6 @@ open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
         (getChildAt(0) as? TextView)?.run {
             setTypeface(typeface)
         }
-    }
-
-    enum class AppBarState {
-        COLLAPSED, EXPANDED, IDLE
     }
 
     private class MonetAppBarToolbarReferenceException: Exception("You must declare app:toolbarId for MonetAppBarLayout to point to your toolbar, or set MonetAppBarLayout.toolbar")

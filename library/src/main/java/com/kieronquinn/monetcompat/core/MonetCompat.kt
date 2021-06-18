@@ -1,6 +1,7 @@
 package com.kieronquinn.monetcompat.core
 
 import android.Manifest
+import android.app.WallpaperColors
 import android.app.WallpaperManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,7 +10,9 @@ import android.content.IntentFilter
 import android.content.res.Resources
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
+import android.os.Parcel
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
@@ -19,6 +22,7 @@ import com.kieronquinn.monetcompat.extensions.isDarkMode
 import com.kieronquinn.monetcompat.extensions.isSameAs
 import com.kieronquinn.monetcompat.extensions.toArgb
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
+import dev.kdrag0n.monet.colors.Srgb
 import dev.kdrag0n.monet.theme.DynamicColorScheme
 import dev.kdrag0n.monet.theme.TargetColors
 import kotlinx.coroutines.*
@@ -99,6 +103,23 @@ class MonetCompat private constructor(context: Context) {
                 throw MonetPaletteException()
             }
         }
+
+        /**
+         *  Optionally implement your own picker to choose from the (up to) three wallpaper picked colors.
+         *  You may wish to have a color picker elsewhere in your app, using SharedPreferences
+         *  (and default to `firstOrNull()`) to pick it from the list if it's still there.
+         *
+         *  Note that this list will change with the wallpaper, so if you have saved a preference here,
+         *  don't just return it blind - make sure it's still in the list first.
+         *
+         *  **Note:** The list can be `null` if the wallpaper colors failed to be extracted. You can
+         *  either return your chosen default color, or return `null` and MonetCompat will set the default
+         *  for you.
+         */
+        @JvmStatic
+        var wallpaperColorPicker: suspend (List<Int>?) -> Int? = {
+            it?.firstOrNull()
+        }
     }
 
     private val wallpaperManager by lazy {
@@ -177,13 +198,13 @@ class MonetCompat private constructor(context: Context) {
      *  so the [Dispatchers.IO] dispatcher is used here.
      */
     private fun updateMonetColorsInternal(isUiModeChange: Boolean = false) = GlobalScope.launch(Dispatchers.IO) {
-        val primaryColor = getWallpaperPrimaryColorCompat(wallpaperManager)
+        val primaryColor = getWallpaperPrimaryColorCompat()
         wallpaperPrimaryColor = primaryColor
         val newMonetColors = if(primaryColor != null){
             if(debugLog){
                 Log.i(TAG, "Got wallpaper primary color #${Integer.toHexString(primaryColor)}")
             }
-            DynamicColorScheme(TargetColors(chromaMultiplier), primaryColor, chromaMultiplier)
+            DynamicColorScheme(TargetColors(chromaMultiplier), Srgb(primaryColor), chromaMultiplier)
         }else{
             if(debugLog){
                 Log.w(TAG, "Unable to get primary color from wallpaper, using default app colors")
@@ -391,33 +412,76 @@ class MonetCompat private constructor(context: Context) {
      *  Get a [DynamicColorScheme] instance for the [defaultPrimaryColor] and specified [chromaMultiplier]
      */
     private fun getDefaultColors(): DynamicColorScheme {
-        return DynamicColorScheme(TargetColors(chromaMultiplier), defaultPrimaryColor!!, chromaMultiplier)
+        return DynamicColorScheme(TargetColors(chromaMultiplier), Srgb(defaultPrimaryColor!!), chromaMultiplier)
     }
 
     /**
-     *  Gets the primary color from the wallpaper using the following logic:
+     *  Gets the color(s) from the wallpaper using the following logic:
      *  - If using Android 8.1 or above, use [WallpaperManager.getWallpaperColors]
      *  - If using Android 8.1 and below and Palette compat is enabled, use Palette to extract
      *     the color from the wallpaper and use that
      *  - Otherwise, null and the default app colors will be used elsewhere instead
+     *
+     *  These colors are then passed into the [wallpaperColorPicker] (defaults to just returning the
+     *  first item from the list), to allow custom implementations of pickers.
      *
      *  **Important**: getWallpaperColors relies on a *developer implementation* in live wallpapers to
      *  return the correct colors, and Palette compat does not work with live wallpapers at all.
      *  `null` will be returned in the case of incompatibility (and the default colors will be used
      *  instead)
      */
-    private fun getWallpaperPrimaryColorCompat(wallpaperManager: WallpaperManager): Int? {
-        return when {
+    private suspend fun getWallpaperPrimaryColorCompat(): Int? {
+        val wallpaperColors = getAvailableWallpaperColors() ?: return null
+        return wallpaperColorPicker.invoke(wallpaperColors)
+    }
+
+    /**
+     *  Returns a list of the available colors for the currently set wallpaper, which you can then
+     *  use to show a picker for the user to pick and save their preferred color.
+     *  You can then implement [wallpaperColorPicker] to pick this from the list (if it's still
+     *  available) to use in the Monet theming.
+     *
+     *  **Note:** This list may be empty, if the wallpaper colors are unable to be extracted.
+     */
+    suspend fun getAvailableWallpaperColors(): List<Int>? = withContext(Dispatchers.IO) {
+        return@withContext when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 -> {
                 val wallpaperColors = wallpaperManager.getWallpaperColors(wallpaperSource)
-                wallpaperColors?.primaryColor?.toArgb()
+                wallpaperColors?.getColorOptions()
             }
             paletteCompatEnabled -> {
-                val wallpaper = wallpaperManager.drawable ?: return null
-                Palette.from((wallpaper as BitmapDrawable).bitmap).generate().getDominantColor(0)
+                val wallpaper = wallpaperManager.drawable ?: return@withContext null
+                Palette.from((wallpaper as BitmapDrawable).bitmap).generate().getColorOptions()
             }
             else -> null
         }
+    }
+
+    /**
+     *  Returns the currently selected wallpaper color (or null). This value is passed through
+     *  the [wallpaperColorPicker], and is suitable for use to show the user's current selection
+     *  in color pickers.
+     */
+    suspend fun getSelectedWallpaperColor(): Int? {
+        val wallpaperColors = getAvailableWallpaperColors() ?: return null
+        return wallpaperColorPicker.invoke(wallpaperColors)
+    }
+
+    /**
+     *  Creates an array of the three picked colors from [WallpaperColors] to go into the color picker
+     */
+    @RequiresApi(Build.VERSION_CODES.O_MR1)
+    private fun WallpaperColors.getColorOptions(): List<Int> {
+        return arrayOf(primaryColor, secondaryColor, tertiaryColor).filterNot { it == null }.distinct().map { it.toArgb() }
+    }
+
+    /**
+     *  Creates an array of the three picked colors from [Palette] to go into the color picker
+     */
+    private fun Palette.getColorOptions(): List<Int>? {
+        val colors = arrayOf(getDominantColor(0), getVibrantColor(0), this.getMutedColor(0)).filterNot { it == 0 }.distinct()
+        return if(colors.isNotEmpty()) colors
+        else null
     }
 
 }

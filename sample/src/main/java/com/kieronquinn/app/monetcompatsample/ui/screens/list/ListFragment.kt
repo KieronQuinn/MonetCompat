@@ -13,8 +13,8 @@ import com.kieronquinn.app.monetcompatsample.R
 import com.kieronquinn.app.monetcompatsample.databinding.FragmentListBinding
 import com.kieronquinn.app.monetcompatsample.ui.base.BaseTabFragment
 import com.kieronquinn.monetcompat.extensions.views.applyMonetRecursively
+import com.kieronquinn.monetcompat.extensions.views.enableStretchOverscroll
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.roundToInt
@@ -40,7 +40,7 @@ class ListFragment: BaseTabFragment<FragmentListBinding>(FragmentListBinding::in
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupInsets()
-        setupScrollView(savedInstanceState)
+        setupRecyclerView(savedInstanceState)
     }
 
     private fun setupInsets(){
@@ -52,12 +52,13 @@ class ListFragment: BaseTabFragment<FragmentListBinding>(FragmentListBinding::in
         }
     }
 
-    private fun setupScrollView(savedInstanceState: Bundle?) {
+    private fun setupRecyclerView(savedInstanceState: Bundle?) {
         with(binding.root){
             layoutManager = LinearLayoutManager(context).apply {
                 onRestoreInstanceState(savedInstanceState?.getParcelable(KEY_POSITION))
             }
             adapter = ListAdapter(context, viewModel.items)
+            enableStretchOverscroll()
         }
         lifecycleScope.launch {
             containerSharedViewModel.scrollToTopBus.collect {
@@ -69,7 +70,7 @@ class ListFragment: BaseTabFragment<FragmentListBinding>(FragmentListBinding::in
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if(!isAdded) return
+        if(!isResumed) return
         binding.root.layoutManager?.onSaveInstanceState()?.let {
             outState.putParcelable(KEY_POSITION, it)
         }

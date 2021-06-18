@@ -4,19 +4,16 @@ import android.content.Context
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
-import android.widget.FrameLayout
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.*
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.kieronquinn.app.monetcompatsample.R
 import com.kieronquinn.app.monetcompatsample.databinding.FragmentDebugPaletteBinding
 import com.kieronquinn.app.monetcompatsample.ui.base.BoundFragment
 import com.kieronquinn.app.monetcompatsample.utils.TransitionUtils
-import com.kieronquinn.monetcompat.extensions.applyMonet
-import com.kieronquinn.monetcompat.extensions.views.setOverscrollTint
+import com.kieronquinn.monetcompat.extensions.views.enableStretchOverscroll
 import kotlin.math.roundToInt
 
 class DebugPaletteFragment : BoundFragment<FragmentDebugPaletteBinding>(FragmentDebugPaletteBinding::inflate) {
@@ -38,7 +35,7 @@ class DebugPaletteFragment : BoundFragment<FragmentDebugPaletteBinding>(Fragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
-        setupRecyclerView()
+        setupRecyclerView(savedInstanceState)
         view.setBackgroundColor(monet.getBackgroundColor(view.context))
     }
 
@@ -72,7 +69,7 @@ class DebugPaletteFragment : BoundFragment<FragmentDebugPaletteBinding>(Fragment
         }
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView(savedInstanceState: Bundle?) {
         ViewCompat.setOnApplyWindowInsetsListener(binding.fragmentDebugPaletteRecyclerview) { view, insets ->
             val bottomInset =
                 insets.getInsets(WindowInsetsCompat.Type.navigationBars() or WindowInsetsCompat.Type.ime()).bottom
@@ -82,9 +79,17 @@ class DebugPaletteFragment : BoundFragment<FragmentDebugPaletteBinding>(Fragment
         with(binding.fragmentDebugPaletteRecyclerview) {
             layoutManager = LinearLayoutManager(context)
             adapter = this@DebugPaletteFragment.adapter
-            setOverscrollTint(monet.getAccentColor(context))
+            enableStretchOverscroll()
         }
         adapter.getColors(requireContext())
+        //Fixes a bug where the list will sometimes pop below the toolbar when created
+        if(savedInstanceState == null){
+            binding.fragmentDebugPaletteRecyclerview.run {
+                post {
+                    scrollToPosition(0)
+                }
+            }
+        }
     }
 
     private fun getToolbarHeight(): Int? {
