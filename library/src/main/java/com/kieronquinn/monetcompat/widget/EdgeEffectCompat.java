@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 package com.kieronquinn.monetcompat.widget;
-import android.annotation.ColorInt;
-import android.annotation.Nullable;
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.BlendMode;
