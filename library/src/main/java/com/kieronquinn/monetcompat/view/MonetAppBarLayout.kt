@@ -293,7 +293,7 @@ open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
             setCollapsedTitleTextAppearance(R.style.CollapsingToolbarTextLargeTitle)
             setExpandedTitleTypeface(typefaceExpanded)
             setCollapsedTitleTypeface(typefaceExpanded)
-            (this as MonetCollapsingToolbar).largeTitlePaddingStart = this@MonetAppBarLayout.largeTitlePaddingStart
+            (this as? MonetCollapsingToolbar)?.largeTitlePaddingStart = this@MonetAppBarLayout.largeTitlePaddingStart
         }
     }
 
