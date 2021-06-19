@@ -35,6 +35,7 @@ class StretchEdgeEffect(context: Context, private val view: View, private val di
     override fun onPull(deltaDistance: Float, displacement: Float) {
         super.onPull(deltaDistance, displacement)
         if(direction == Direction.UNSUPPORTED) return
+        absorbAnimation?.cancel()
         view.pivotY = direction.getPivotY(originalHeight) ?: return
         val distance = calculateDistanceFromGlowValues(mGlowAlpha, mGlowScaleY)
         view.scaleY = (1 + distance).coerceAtMost(maxScaleY)
@@ -47,11 +48,14 @@ class StretchEdgeEffect(context: Context, private val view: View, private val di
         view.animate().scaleY(1f).setDuration(250L).start()
     }
 
+    private var absorbAnimation: AnimatorSet? = null
     override fun onAbsorb(velocity: Int) {
         super.onAbsorb(velocity)
+        if(direction == Direction.UNSUPPORTED) return
+        absorbAnimation?.cancel()
         view.pivotY = direction.getPivotY(originalHeight) ?: return
         val distance = calculateDistanceFromGlowValues(mGlowAlphaFinish, mGlowScaleYFinish) * 25f
-        val animatorSet = AnimatorSet()
+        absorbAnimation = AnimatorSet()
         val endScaleY = (1f + distance).coerceAtMost(maxScaleY)
         val scaleUp = ValueAnimator.ofFloat(1f, endScaleY).apply {
             addUpdateListener {
@@ -65,9 +69,11 @@ class StretchEdgeEffect(context: Context, private val view: View, private val di
             }
             duration = mDuration.toLong()
         }
-        animatorSet.play(scaleUp)
-        animatorSet.play(scaleDown).after(scaleUp)
-        animatorSet.start()
+        absorbAnimation?.run {
+            play(scaleUp)
+            play(scaleDown).after(scaleUp)
+            start()
+        }
     }
 
     private fun calculateDistanceFromGlowValues(arg4: Float, arg5: Float): Float {

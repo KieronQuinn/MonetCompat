@@ -385,5 +385,5 @@ open class MonetAppBarLayout: AppBarLayout, MonetColorsChangedListener {
     private class MonetAppBarToolbarNotFoundException(resourceId: Int, resourceName: String): Exception("Toolbar $resourceName (ID $resourceId) not found as a child of this MonetAppBarLayout")
     private class MonetAppBarCollapsingToolbarNotFoundException: Exception("No CollapsingToolbarLayout found as child of MonetAppBarLayout")
 
-    
+
 }

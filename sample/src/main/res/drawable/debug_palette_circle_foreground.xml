@@ -4,8 +4,8 @@
     <size
         android:width="72dp"
         android:height="72dp" />
-    <stroke android:color="?android:windowBackground"
+    <stroke android:color="@android:color/white"
         android:width="2dp"/>
     <solid
-        android:color="@android:color/transparent"/>
+        android:color="@android:color/white"/>
 </shape>
