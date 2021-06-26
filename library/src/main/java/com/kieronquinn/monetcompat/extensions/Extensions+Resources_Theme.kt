@@ -3,9 +3,6 @@ package com.kieronquinn.monetcompat.extensions
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.util.Log
-import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes

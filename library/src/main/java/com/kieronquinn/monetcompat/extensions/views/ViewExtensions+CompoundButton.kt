@@ -1,8 +1,6 @@
 package com.kieronquinn.monetcompat.extensions.views
 
 import android.content.res.ColorStateList
-import android.graphics.drawable.RippleDrawable
-import android.util.Log
 import android.widget.CompoundButton
 import androidx.annotation.ColorInt
 import com.kieronquinn.monetcompat.core.MonetCompat

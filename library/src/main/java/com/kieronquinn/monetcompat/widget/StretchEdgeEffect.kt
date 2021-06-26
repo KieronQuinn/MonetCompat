@@ -3,12 +3,7 @@ package com.kieronquinn.monetcompat.widget
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.*
-import android.os.Build
 import android.view.View
-import android.view.animation.AnimationUtils
-import android.view.animation.DecelerateInterpolator
-import android.widget.EdgeEffect
 import androidx.recyclerview.widget.RecyclerView
 
 class StretchEdgeEffect(context: Context, private val view: View, private val direction: Direction): EdgeEffectCompat(context) {

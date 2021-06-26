@@ -1,7 +1,6 @@
 package com.kieronquinn.monetcompat.extensions.views
 
 import android.content.res.ColorStateList
-import android.util.Log
 import androidx.annotation.ColorInt
 import com.google.android.material.slider.Slider
 import com.kieronquinn.monetcompat.core.MonetCompat

@@ -10,7 +10,6 @@ import android.content.IntentFilter
 import android.content.res.Resources
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
-import android.os.Parcel
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission

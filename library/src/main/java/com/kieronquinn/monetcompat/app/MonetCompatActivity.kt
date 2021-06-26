@@ -10,8 +10,8 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.ListMenuItemView
 import com.kieronquinn.monetcompat.core.MonetActivityAccessException
-import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
 import com.kieronquinn.monetcompat.core.MonetCompat
+import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
 import dev.kdrag0n.monet.theme.DynamicColorScheme
 
 abstract class MonetCompatActivity : AppCompatActivity(), MonetColorsChangedListener {

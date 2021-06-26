@@ -1,13 +1,11 @@
 package com.kieronquinn.monetcompat.extensions.views
 
 import android.content.res.ColorStateList
-import android.widget.Switch
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import com.kieronquinn.monetcompat.R
 import com.kieronquinn.monetcompat.core.MonetCompat
-import com.kieronquinn.monetcompat.extensions.getColorControlNormal
 import com.kieronquinn.monetcompat.extensions.isDarkMode
 import com.kieronquinn.monetcompat.extensions.toArgb
 

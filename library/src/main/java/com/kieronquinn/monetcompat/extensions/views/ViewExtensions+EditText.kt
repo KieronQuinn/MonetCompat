@@ -6,7 +6,6 @@ import android.content.res.Resources
 import android.graphics.PorterDuff
 import android.graphics.drawable.*
 import android.os.Build
-import android.util.Log
 import android.util.TypedValue
 import android.widget.EditText
 import android.widget.TextView

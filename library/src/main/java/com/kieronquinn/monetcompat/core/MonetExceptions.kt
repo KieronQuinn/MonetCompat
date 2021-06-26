@@ -1,7 +1,5 @@
 package com.kieronquinn.monetcompat.core
 
-import kotlin.NullPointerException
-
 class MonetPaletteException: Exception("You must include androidx.palette as a dependency to use Palette compat")
 class MonetInstanceException: NullPointerException("Cannot access MonetCompat instance before calling create")
 class MonetFragmentAccessException: NullPointerException("You cannot access Monet before onCreateView or after onDestroyView")

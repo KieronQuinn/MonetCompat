@@ -4,7 +4,6 @@ import androidx.annotation.ColorInt
 import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.kieronquinn.monetcompat.core.MonetCompat
-import com.kieronquinn.monetcompat.extensions.getColorControlNormal
 import com.kieronquinn.monetcompat.extensions.getColorWithAlpha
 
 fun BaseProgressIndicator<*>.applyMonet() = apply {

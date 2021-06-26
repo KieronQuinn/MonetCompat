@@ -1,9 +1,6 @@
 package com.kieronquinn.monetcompat.extensions.views
 
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.util.Log
-import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import com.google.android.material.tabs.TabLayout
 import com.kieronquinn.monetcompat.core.MonetCompat

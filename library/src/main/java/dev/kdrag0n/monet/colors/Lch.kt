@@ -1,6 +1,9 @@
 package dev.kdrag0n.monet.colors
 
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 interface Lch {
     val L: Double

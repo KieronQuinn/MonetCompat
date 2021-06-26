@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 package com.kieronquinn.monetcompat.widget;
-import androidx.annotation.ColorInt;
-import androidx.annotation.Nullable;
+
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.BlendMode;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -30,6 +28,9 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.EdgeEffect;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
 
 /**
  * COPY PASTE OF CLASS FROM

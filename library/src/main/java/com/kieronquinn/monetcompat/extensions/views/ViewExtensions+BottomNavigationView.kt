@@ -5,7 +5,6 @@ import androidx.annotation.ColorInt
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.extensions.getColorControlNormal
-import com.kieronquinn.monetcompat.extensions.getTextColorPrimary
 
 /**
  *  Applies Monet colors to the BottomNavigationView, this will *not* work before MonetCompat is

@@ -1,7 +1,6 @@
 package com.kieronquinn.monetcompat.extensions.views
 
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.widget.EdgeEffect
 import android.widget.HorizontalScrollView

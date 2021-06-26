@@ -2,7 +2,6 @@ package com.kieronquinn.monetcompat.extensions
 
 import android.content.Context
 import android.content.res.Configuration
-import androidx.annotation.RestrictTo
 
 /**
  *  Returns whether the current context has a dark configuration

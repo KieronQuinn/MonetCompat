@@ -1,11 +1,7 @@
 package com.kieronquinn.monetcompat.extensions.views
 
 import android.content.res.ColorStateList
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
-import android.util.Log
 import androidx.annotation.ColorInt
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.extensions.isDarkMode

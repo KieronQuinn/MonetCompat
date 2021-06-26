@@ -1,7 +1,7 @@
 package dev.kdrag0n.monet.theme
 
-import dev.kdrag0n.monet.colors.Oklch
 import dev.kdrag0n.monet.colors.Color
+import dev.kdrag0n.monet.colors.Oklch
 
 /*
  * Default target colors, conforming to Material You standards.
