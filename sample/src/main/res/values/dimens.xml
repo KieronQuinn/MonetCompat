@@ -12,5 +12,5 @@
 
     <dimen name="toolbar_expanded_height">226dp</dimen>
     <dimen name="toolbar_scrim_visible_height">174dp</dimen>
-    <dimen name="toolbar_expanded_title_margin">24dp</dimen>
+    <dimen name="toolbar_expanded_title_margin">16dp</dimen>
 </resources>
