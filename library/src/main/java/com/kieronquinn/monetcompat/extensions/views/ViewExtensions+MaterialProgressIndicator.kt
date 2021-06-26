@@ -9,7 +9,7 @@ import com.kieronquinn.monetcompat.extensions.getColorWithAlpha
 
 fun BaseProgressIndicator<*>.applyMonet() = apply {
     val monet = MonetCompat.getInstance()
-    setTint(monet.getSecondaryColor(context) ?: context.getColorControlNormal(), monet.getAccentColor(context))
+    setTint(monet.getSecondaryColor(context), monet.getAccentColor(context))
 }
 
 fun BaseProgressIndicator<*>.setTint(@ColorInt trackColor: Int, @ColorInt indicatorColor: Int) {

@@ -22,7 +22,7 @@ fun AlertDialog.applyMonet(onDismiss: ((DialogInterface) -> Unit)? = null) = app
     val monet = MonetCompat.getInstance()
     val update = {
         val accentColor = monet.getAccentColor(context)
-        val disabledColor = monet.getSecondaryColor(context) ?: monet.getPrimaryColor(context)
+        val disabledColor = monet.getSecondaryColor(context)
         val textColor = ColorStateList(
             arrayOf(intArrayOf(android.R.attr.state_enabled), intArrayOf()),
             intArrayOf(accentColor, disabledColor)

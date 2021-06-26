@@ -130,7 +130,7 @@ open class MonetSwitch: SwitchCompat, MonetColorsChangedListener {
         val uncheckedTrackColor = monet.getMonetColors().accent1[600]?.toArgb() ?: monet.getAccentColor(context, false)
         val checkedTrackColor = monet.getMonetColors().accent1[300]?.toArgb() ?: uncheckedTrackColor
         val checkedThumbColor = monet.getPrimaryColor(context, false)
-        val uncheckedThumbColor = monet.getSecondaryColor(context, false) ?: checkedThumbColor
+        val uncheckedThumbColor = monet.getSecondaryColor(context, false)
         setTint(checkedTrackColor, uncheckedTrackColor, uncheckedThumbColor, checkedThumbColor)
     }
 

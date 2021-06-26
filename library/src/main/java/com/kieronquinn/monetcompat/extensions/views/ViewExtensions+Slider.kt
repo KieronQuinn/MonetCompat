@@ -13,7 +13,7 @@ import com.kieronquinn.monetcompat.extensions.getColorWithAlpha
  */
 fun Slider.applyMonet(): Slider = apply {
     val monet = MonetCompat.getInstance()
-    setTint(monet.getSecondaryColor(context) ?: monet.getPrimaryColor(context), monet.getAccentColor(context))
+    setTint(monet.getSecondaryColor(context), monet.getAccentColor(context))
 }
 
 fun Slider.setTint(@ColorInt trackColor: Int, @ColorInt thumbColor: Int){

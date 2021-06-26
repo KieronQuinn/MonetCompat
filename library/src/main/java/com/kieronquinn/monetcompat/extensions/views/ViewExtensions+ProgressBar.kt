@@ -17,7 +17,7 @@ import com.kieronquinn.monetcompat.extensions.getColorControlNormal
  */
 fun ProgressBar.applyMonet() = apply {
     val monet = MonetCompat.getInstance()
-    setTint(monet.getSecondaryColor(context) ?: context.getColorControlNormal(), monet.getAccentColor(context))
+    setTint(monet.getSecondaryColor(context), monet.getAccentColor(context))
 }
 
 fun ProgressBar.setTint(@ColorInt trackColor: Int, @ColorInt barColor: Int){

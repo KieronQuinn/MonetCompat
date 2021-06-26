@@ -37,7 +37,7 @@ fun MaterialDialog.applyMonet(applyNavigationBarColor: Boolean = false){
     }
     val updateButtons = {
         val accentColor = monet.getAccentColor(context)
-        val disabledColor = monet.getSecondaryColor(context) ?: monet.getPrimaryColor(context)
+        val disabledColor = monet.getSecondaryColor(context)
         val textColor = ColorStateList(
             arrayOf(intArrayOf(R.attr.state_enabled), intArrayOf()),
             intArrayOf(accentColor, disabledColor)

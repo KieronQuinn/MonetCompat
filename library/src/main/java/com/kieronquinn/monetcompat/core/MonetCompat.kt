@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
+import com.kieronquinn.monetcompat.R
 import com.kieronquinn.monetcompat.app.MonetCompatActivity
 import com.kieronquinn.monetcompat.extensions.getAttributeColor
 import com.kieronquinn.monetcompat.extensions.isDarkMode
@@ -145,6 +146,20 @@ class MonetCompat private constructor(context: Context) {
             return if(field == null){
                 theme.getAttributeColor(android.R.attr.colorPrimary)
                     ?: throw MonetAttributeNotFoundException("android.R.attr.colorPrimary")
+            }else field
+        }
+
+    /**
+     *  Default app Secondary color, will be set to [R.attr.colorPrimaryVariant] from the
+     *  *creation context's* theme if unchanged
+     *  This is used as the "wallpaper color" when unable to get a wallpaper and in [getSecondaryColor]
+     *  when there are no generated monet colors
+     */
+    var defaultSecondaryColor: Int? = null
+        get() {
+            return if(field == null){
+                theme.getAttributeColor(R.attr.colorPrimaryVariant)
+                    ?: throw MonetAttributeNotFoundException("R.attr.colorPrimaryVariant")
             }else field
         }
 
@@ -315,17 +330,16 @@ class MonetCompat private constructor(context: Context) {
 
     /**
      *  Returns a color suitable for use as an app's secondary color
-     *  There is no default secondary color, so `null` will be returned if Monet colors are not
-     *  available.
+     *  If Monet colors aren't available, the [defaultSecondaryColor] will be returned instead
      *  @param context Your context, ideally a non-application context as it will be used to check
      *  if dark mode is enabled
      *  @param darkMode An optional override for whether to use dark mode
      */
-    fun getSecondaryColor(context: Context, darkMode: Boolean? = null): Int? {
+    fun getSecondaryColor(context: Context, darkMode: Boolean? = null): Int {
         return if(darkMode ?: context.isDarkMode){
-            monetColors?.accent2?.get(400)?.toArgb()
+            monetColors?.accent2?.get(400)?.toArgb() ?: ContextCompat.getColor(context, defaultSecondaryColor!!)
         }else{
-            monetColors?.accent2?.get(300)?.toArgb()
+            monetColors?.accent2?.get(300)?.toArgb() ?: ContextCompat.getColor(context, defaultSecondaryColor!!)
         }
     }
 

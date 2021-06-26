@@ -3,6 +3,7 @@
     <color name="window_background">#ffffff</color>
     <color name="accent">#03A9F4</color>
     <color name="primary">#2196F3</color>
+    <color name="primary_variant">#1976D2</color>
     <color name="toolbar">@android:color/white</color>
     <color name="navigation_bar">@android:color/black</color>
 </resources>
