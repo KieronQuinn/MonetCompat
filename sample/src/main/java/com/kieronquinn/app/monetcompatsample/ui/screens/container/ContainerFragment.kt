@@ -38,10 +38,6 @@ import kotlin.math.roundToInt
 class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContainerBinding::inflate),
     TabLayout.OnTabSelectedListener {
 
-    companion object {
-        private const val KEY_COLLAPSED_STATE = "KEY_COLLAPSED_STATE"
-    }
-
     private val navHostFragment by lazy {
         childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
     }
@@ -93,7 +89,7 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
         setupNavigation()
         setupTabs()
         setupBottomNavigation()
-        setupAppBar(savedInstanceState?.getBoolean(KEY_COLLAPSED_STATE) ?: false)
+        setupAppBar()
     }
 
     private fun setupNavigation(){
@@ -139,6 +135,7 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
                 text = getString(R.string.bottom_nav_list)
                 id = R.id.tab_list
             })
+            setBackgroundColor(monet.getBackgroundColor(requireContext()))
         }
         lifecycleScope.launchWhenResumed {
             containerSharedViewModel.currentDestination.collect { id ->
@@ -193,7 +190,7 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
         }
     }
 
-    private fun setupAppBar(savedCollapsedState: Boolean){
+    private fun setupAppBar(){
         ViewCompat.setOnApplyWindowInsetsListener(binding.collapsingToolbar){ view, insets ->
             view.updateLayoutParams<AppBarLayout.LayoutParams> {
                 val appBarHeight = view.context.resources.getDimension(R.dimen.app_bar_height)
@@ -217,7 +214,10 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
         binding.toolbar.setOnMenuItemClickListener {
             onMenuItemClicked(it)
         }
-        binding.appBar.setExpanded(!savedCollapsedState)
+        binding.collapsingToolbar.run {
+            setContentScrimColor(monet.getBackgroundColorSecondary(requireContext()) ?: monet.getBackgroundColor(requireContext()))
+            setBackgroundColor(monet.getBackgroundColor(requireContext()))
+        }
         lifecycleScope.launch {
             containerSharedViewModel.scrollToTopBus.collect {
                 if(!isResumed) return@collect
@@ -277,7 +277,6 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if(!isResumed) return
-        outState.putBoolean(KEY_COLLAPSED_STATE, binding.appBar.isCollapsed)
     }
 
     private fun TabLayout.findTabById(@IdRes id: Int): TabLayout.Tab? {

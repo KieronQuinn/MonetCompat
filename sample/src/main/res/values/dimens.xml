@@ -9,4 +9,8 @@
     <dimen name="debug_list_padding">8dp</dimen>
     <dimen name="shared_axis_x_slide_distance">96dp</dimen>
     <dimen name="bottom_sheet_corner_radius">16dp</dimen>
+
+    <dimen name="toolbar_expanded_height">226dp</dimen>
+    <dimen name="toolbar_scrim_visible_height">174dp</dimen>
+    <dimen name="toolbar_expanded_title_margin">24dp</dimen>
 </resources>

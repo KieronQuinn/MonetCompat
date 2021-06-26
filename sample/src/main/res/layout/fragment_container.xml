@@ -7,26 +7,29 @@
     android:id="@+id/root"
     android:theme="@style/Theme.MonetCompat">
 
-    <com.kieronquinn.monetcompat.view.MonetAppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/toolbar"
-        app:toolbarId="@id/toolbar"
-        android:outlineProvider="none"
-        app:elevation="0dp"
-        app:largeTitlePaddingStart="@dimen/padding_16">
+        app:elevation="0dp">
 
-        <com.kieronquinn.monetcompat.view.MonetCollapsingToolbar
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
-            app:expandedTitleGravity="start|bottom"
-            app:expandedTitleMarginBottom="32dp"
+            app:maxLines="2"
+            app:contentScrim="?attr/colorPrimaryVariant"
+            app:statusBarScrim="@android:color/transparent"
+            app:titleCollapseMode="fade"
+            app:scrimAnimationDuration="50"
+            app:scrimVisibleHeightTrigger="@dimen/toolbar_scrim_visible_height"
+            app:expandedTitleMarginStart="@dimen/toolbar_expanded_title_margin"
+            app:expandedTitleMarginEnd="@dimen/toolbar_expanded_title_margin"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:title="@string/app_name">
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:actionBarSize"
@@ -34,7 +37,7 @@
                 app:title="@string/app_name"
                 app:layout_collapseMode="pin"/>
 
-        </com.kieronquinn.monetcompat.view.MonetCollapsingToolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
@@ -44,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom" />
 
-    </com.kieronquinn.monetcompat.view.MonetAppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

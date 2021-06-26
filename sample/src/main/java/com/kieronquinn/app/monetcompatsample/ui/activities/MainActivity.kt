@@ -25,15 +25,4 @@ class MainActivity : MonetCompatActivity() {
         }
     }
 
-    override fun onMonetColorsChanged(
-        monet: MonetCompat,
-        monetColors: DynamicColorScheme,
-        isInitialChange: Boolean
-    ) {
-        super.onMonetColorsChanged(monet, monetColors, isInitialChange)
-        if(!isInitialChange){
-            recreate()
-        }
-    }
-
 }
