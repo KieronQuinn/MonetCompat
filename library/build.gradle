@@ -17,6 +17,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    packagingOptions {
+        exclude 'META-INF/library_release.kotlin_module'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
