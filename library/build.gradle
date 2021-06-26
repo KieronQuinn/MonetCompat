@@ -17,10 +17,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    packagingOptions {
-        exclude 'META-INF/library_release.kotlin_module'
-    }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -30,6 +26,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        kotlinOptions.moduleName = "com.kieronquinn.library.monetcompat"
     }
     kotlinOptions {
         jvmTarget = '1.8'
