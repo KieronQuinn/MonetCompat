@@ -2,6 +2,8 @@
 
 ![MonetCompat](https://i.imgur.com/L5ku0DLl.png)
 
+![JitPack badge](https://jitpack.io/v/KieronQuinn/MonetCompat.svg)
+
 MonetCompat is an app-level implementation of kdrag0n's custom Monet implementation, used in his [android12-extensions module](https://github.com/kdrag0n/android12-extensions). It supports Android 5.0 and above (in Palette compatibility mode) and Android 8.1 and above in normal mode.
 
 MonetCompat is currently in beta, so feedback and bug reports are greatly appreciated. It's also not currently known if Google will provide their own backwards compatibility library for Monet with Android 12's release, so this library may be replaced by an official one eventually.
