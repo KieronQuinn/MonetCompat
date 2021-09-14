@@ -35,3 +35,5 @@ MonetCompat also includes a few prebuilt custom Views that implement Monet and M
 ## Apps using MonetCompat
 
 [DarQ](https://github.com/KieronQuinn/DarQ)
+[Discover Killer](https://github.com/KieronQuinn/DiscoverKiller)
+[DotOS](https://www.xda-developers.com/dotos-5-2-adds-many-android-12-features/) (Custom ROM)
