@@ -228,6 +228,10 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
 
     private fun onMenuItemClicked(item: MenuItem): Boolean {
         when(item.itemId){
+            R.id.menu_settings -> {
+                rootSharedViewModel.navigateByDirections(
+                    ContainerFragmentDirections.actionContainerFragmentToSettingsBottomSheetFragment())
+            }
             R.id.menu_debug_palette -> {
                 rootSharedViewModel.navigateByDirections(
                     ContainerFragmentDirections.actionContainerFragmentToDebugPaletteFragment())

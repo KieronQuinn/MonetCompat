@@ -6,6 +6,7 @@ import android.view.Window
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.kieronquinn.app.monetcompatsample.R
+import com.kieronquinn.app.monetcompatsample.utils.PreferenceUtils
 import com.kieronquinn.app.monetcompatsample.utils.TransitionUtils
 import com.kieronquinn.monetcompat.app.MonetCompatActivity
 import com.kieronquinn.monetcompat.core.MonetCompat
@@ -19,6 +20,13 @@ class MainActivity : MonetCompatActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         lifecycleScope.launchWhenResumed {
+
+            //Optional, you don't need to set this to use defaults
+            MonetCompat.colorSchemeFactory = PreferenceUtils.getColorSchemeFactory(this@MainActivity)
+
+            //Defaults to true
+            MonetCompat.useSystemColorsOnAndroid12 = PreferenceUtils.getUseSystem(this@MainActivity)
+
             monet.awaitMonetReady()
             window.setBackgroundDrawable(ColorDrawable(monet.getBackgroundColor(this@MainActivity)))
             setContentView(R.layout.activity_main)

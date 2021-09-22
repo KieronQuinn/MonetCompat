@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kieronquinn.app.monetcompatsample.R
 import com.kieronquinn.monetcompat.core.MonetCompat
@@ -30,7 +32,7 @@ abstract class BaseBottomSheetDialogFragment<T: ViewBinding>(private val inflate
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        _binding = inflate.invoke(layoutInflater, container, false)
+        _binding = inflate.invoke(LayoutInflater.from(getThemedContext()), container, false)
         dialog?.setOnShowListener {
             (binding.root.parent as View).backgroundTintList = ColorStateList.valueOf(monet.getBackgroundColor(requireContext()))
         }
@@ -43,9 +45,18 @@ abstract class BaseBottomSheetDialogFragment<T: ViewBinding>(private val inflate
         return binding.root
     }
 
+    open fun getThemedContext(): Context {
+        return requireContext()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (requireDialog() as BottomSheetDialog).behavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     override fun getTheme(): Int {

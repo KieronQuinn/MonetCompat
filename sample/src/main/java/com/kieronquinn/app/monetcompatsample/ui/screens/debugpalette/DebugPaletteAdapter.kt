@@ -14,6 +14,7 @@ import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.extensions.applyMonet
 import com.kieronquinn.monetcompat.extensions.views.setOverscrollTint
 import dev.kdrag0n.monet.colors.Color
+import dev.kdrag0n.monet.theme.ColorScheme
 import dev.kdrag0n.monet.theme.DynamicColorScheme
 
 class DebugPaletteAdapter(private val context: Context): RecyclerView.Adapter<DebugPaletteAdapter.ViewHolder>() {
@@ -95,7 +96,7 @@ class DebugPaletteAdapter(private val context: Context): RecyclerView.Adapter<De
         data class Row(override val binding: RowDebugPaletteColorsBinding): ViewHolder(binding)
     }
 
-    private fun DynamicColorScheme.getColorList(): List<Pair<String, Map<Int, Color>>> {
+    private fun ColorScheme.getColorList(): List<Pair<String, Map<Int, Color>>> {
         return listOf(
             Pair("Accent 1", accent1),
             Pair("Accent 2", accent2),

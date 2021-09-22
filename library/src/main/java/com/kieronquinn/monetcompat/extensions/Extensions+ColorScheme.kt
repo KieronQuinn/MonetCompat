@@ -1,12 +1,12 @@
 package com.kieronquinn.monetcompat.extensions
 
-import dev.kdrag0n.monet.theme.DynamicColorScheme
+import dev.kdrag0n.monet.theme.ColorScheme
 
 /**
  *  To avoid editing the core Monet code by kdrag0n, these are extensions instead
  */
-fun DynamicColorScheme.isSameAs(other: Any?): Boolean {
-    if(other !is DynamicColorScheme) return false
+fun ColorScheme.isSameAs(other: Any?): Boolean {
+    if(other !is ColorScheme) return false
     this.accentColors.forEachIndexed { index, map ->
         if(!map.values.toList().deepEquals(other.accentColors[index].values.toList())) return false
     }

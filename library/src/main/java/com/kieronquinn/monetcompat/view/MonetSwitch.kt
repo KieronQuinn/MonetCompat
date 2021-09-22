@@ -18,6 +18,7 @@ import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.extensions.toArgb
 import com.kieronquinn.monetcompat.extensions.views.overrideRippleColor
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
+import dev.kdrag0n.monet.theme.ColorScheme
 import dev.kdrag0n.monet.theme.DynamicColorScheme
 
 /**
@@ -120,7 +121,7 @@ open class MonetSwitch: SwitchCompat, MonetColorsChangedListener {
 
     override fun onMonetColorsChanged(
         monet: MonetCompat,
-        monetColors: DynamicColorScheme,
+        monetColors: ColorScheme,
         isInitialChange: Boolean
     ) {
         applyMonet()

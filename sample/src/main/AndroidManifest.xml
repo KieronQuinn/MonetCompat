@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:name=".MonetCompatSample"
         android:theme="@style/Theme.MonetCompat.Legacy">
-        <activity android:name=".ui.activities.MainActivity">
+        <activity android:name=".ui.activities.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

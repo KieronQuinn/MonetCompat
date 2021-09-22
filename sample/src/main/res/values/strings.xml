@@ -5,5 +5,18 @@
     <string name="bottom_nav_list">List</string>
     <string name="debug_palette">Debug: View Palette</string>
     <string name="color_picker_title">Wallpaper Color Picker</string>
-    <string name="color_picker_unavailable">Wallpaper Color Picker unavailable for the currently selected wallpaper</string>
+    <string name="color_picker_unavailable">Unavailable for the current wallpaper or your current settings</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_zcam">ZCAM</string>
+    <string name="settings_zcam_desc">Use the ZCAM gamut rather than OkLab. See https://github.com/kdrag0n/glcolortest for more info</string>
+    <string name="settings_chroma_factor">Chroma Factor</string>
+    <string name="settings_accurate_shades">Accurate Shades</string>
+    <string name="settings_accurate_shades_desc">Prefer lightness over chroma</string>
+    <string name="settings_white_luminance">White Luminance (ZCAM only)</string>
+    <string name="settings_linear_brightness">Linear Brightness</string>
+    <string name="settings_linear_brightness_desc">Use a linear brightness map rather than CIELAB (ZCAM only)</string>
+    <string name="close">Close</string>
+    <string name="settings_override">Override Defaults</string>
+    <string name="settings_android_12_system">Use System Colors</string>
+    <string name="settings_reset">Reset</string>
 </resources>
