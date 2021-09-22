@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.core.MonetDialogException
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
+import dev.kdrag0n.monet.theme.ColorScheme
 import dev.kdrag0n.monet.theme.DynamicColorScheme
 
 /**
@@ -35,7 +36,7 @@ fun AlertDialog.applyMonet(onDismiss: ((DialogInterface) -> Unit)? = null) = app
         }
     }
     val listener = object: MonetColorsChangedListener {
-        override fun onMonetColorsChanged(monet: MonetCompat, monetColors: DynamicColorScheme, isInitialChange: Boolean) {
+        override fun onMonetColorsChanged(monet: MonetCompat, monetColors: ColorScheme, isInitialChange: Boolean) {
             update.invoke()
         }
     }

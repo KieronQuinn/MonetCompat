@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:background="@drawable/bottom_sheet_rounded_bg"
+    tools:layout_gravity="bottom">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/settings_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_16"
+                android:layout_marginBottom="@dimen/padding_8"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_8"
+                android:paddingBottom="@dimen/padding_8"
+                android:text="@string/settings_title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_override"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                android:paddingStart="@dimen/padding_16"
+                android:paddingTop="@dimen/padding_8"
+                android:paddingEnd="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_8">
+
+                <TextView
+                    android:id="@+id/settings_override_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/settings_override"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="?android:textColorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_override_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.75"
+                    android:scaleY="0.75"
+                    android:thumb="@drawable/switch_thumb"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:track="@drawable/switch_track" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_android_12_system"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                android:paddingStart="@dimen/padding_16"
+                android:paddingTop="@dimen/padding_8"
+                android:paddingEnd="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_8">
+
+                <TextView
+                    android:id="@+id/settings_android_12_system_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/settings_android_12_system"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="?android:textColorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_android_12_system_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.75"
+                    android:scaleY="0.75"
+                    android:thumb="@drawable/switch_thumb"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:track="@drawable/switch_track" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_zcam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                android:paddingStart="@dimen/padding_16"
+                android:paddingTop="@dimen/padding_8"
+                android:paddingEnd="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_8">
+
+                <TextView
+                    android:id="@+id/settings_zcam_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/settings_zcam"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="?android:textColorPrimary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/settings_zcam_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:linksClickable="true"
+                    android:text="@string/settings_zcam_desc"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    app:layout_constraintEnd_toStartOf="@id/settings_zcam_switch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/settings_zcam_title" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_zcam_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.75"
+                    android:scaleY="0.75"
+                    android:thumb="@drawable/switch_thumb"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:track="@drawable/switch_track" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/settings_chroma_factor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_16"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/settings_chroma_factor"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="?android:textColorPrimary" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/settings_chroma_factor_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_16"
+                android:layout_marginEnd="@dimen/padding_16"
+                android:layout_marginBottom="@dimen/padding_16" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_accurate_shades"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                android:paddingStart="@dimen/padding_16"
+                android:paddingTop="@dimen/padding_8"
+                android:paddingEnd="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_8">
+
+                <TextView
+                    android:id="@+id/settings_accurate_shades_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/settings_accurate_shades"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="?android:textColorPrimary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/settings_accurate_shades_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_accurate_shades_desc"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    app:layout_constraintEnd_toStartOf="@id/settings_accurate_shades_switch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/settings_accurate_shades_title" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_accurate_shades_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.75"
+                    android:scaleY="0.75"
+                    android:thumb="@drawable/switch_thumb"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:track="@drawable/switch_track" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/settings_white_luminance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_16"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/settings_white_luminance"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="?android:textColorPrimary" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/settings_white_luminance_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_16"
+                android:layout_marginEnd="@dimen/padding_16"
+                android:layout_marginBottom="@dimen/padding_16" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settings_linear_brightness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                android:paddingStart="@dimen/padding_16"
+                android:paddingTop="@dimen/padding_8"
+                android:paddingEnd="@dimen/padding_16"
+                android:paddingBottom="@dimen/padding_8">
+
+                <TextView
+                    android:id="@+id/settings_linear_brightness_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/settings_linear_brightness"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="?android:textColorPrimary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/settings_linear_brightness_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_linear_brightness_desc"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    app:layout_constraintEnd_toStartOf="@id/settings_linear_brightness_switch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/settings_linear_brightness_title" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_linear_brightness_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.75"
+                    android:scaleY="0.75"
+                    android:thumb="@drawable/switch_thumb"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:track="@drawable/switch_track" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/settings_reset"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_margin="@dimen/padding_16"
+        android:background="@null"
+        android:text="@string/settings_reset"
+        android:textAllCaps="false" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/settings_close"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/padding_16"
+        android:background="@null"
+        android:text="@string/close"
+        android:textAllCaps="false" />
+
+    </FrameLayout>
+
+</LinearLayout>

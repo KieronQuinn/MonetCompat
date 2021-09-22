@@ -1,143 +1,98 @@
 package dev.kdrag0n.monet.theme
 
-import dev.kdrag0n.monet.colors.CieLab.Companion.toCieLab
-import dev.kdrag0n.monet.colors.CieXyz.Companion.toCieXyz
+import dev.kdrag0n.monet.colors.OklabGamut.clipToLinearSrgb
 import dev.kdrag0n.monet.colors.Color
 import dev.kdrag0n.monet.colors.Lch
 import dev.kdrag0n.monet.colors.Oklab.Companion.toOklab
+import dev.kdrag0n.monet.colors.OklabGamut
 import dev.kdrag0n.monet.colors.Oklch
 import dev.kdrag0n.monet.colors.Oklch.Companion.toOklch
-import dev.kdrag0n.monet.colors.Srgb
-import kotlin.math.abs
 
 class DynamicColorScheme(
-    targetColors: ColorScheme,
-    primaryColor: Color,
-    chromaMultiplier: Double = 1.0,
+    targets: ColorScheme,
+    seedColor: Color,
+    chromaFactor: Double = 1.0,
     private val accurateShades: Boolean = true,
 ) : ColorScheme() {
-    private val primaryNeutral = primaryColor.toLinearSrgb().toOklab().toOklch().let { lch ->
-        lch.copy(C = lch.C * chromaMultiplier)
+    private val seedNeutral = seedColor.toLinearSrgb().toOklab().toOklch().let { lch ->
+        lch.copy(C = lch.C * chromaFactor)
     }
-    private val primaryAccent = primaryNeutral
+    private val seedAccent = seedNeutral
 
-    init {
-        val primaryRgb8 = primaryColor.toLinearSrgb().toSrgb().quantize8()
-    }
-
-    // Main background color. Tinted with the primary color.
-    override val neutral1 by lazy(mode = LazyThreadSafetyMode.NONE) {
-        transformSwatch(targetColors.neutral1, primaryNeutral)
-    }
-
-    // Secondary background color. Slightly tinted with the primary color.
-    override val neutral2 by lazy(mode = LazyThreadSafetyMode.NONE) {
-        transformSwatch(targetColors.neutral2, primaryNeutral)
-    }
-
-    // Main accent color. Generally, this is close to the primary color.
+    // Main accent color. Generally, this is close to the seed color.
     override val accent1 by lazy(mode = LazyThreadSafetyMode.NONE) {
-        transformSwatch(targetColors.accent1, primaryAccent)
+        transformSwatch(targets.accent1, seedAccent, targets.accent1)
     }
 
     // Secondary accent color. Darker shades of accent1.
     override val accent2 by lazy(mode = LazyThreadSafetyMode.NONE) {
-        transformSwatch(targetColors.accent2, primaryAccent)
+        transformSwatch(targets.accent2, seedAccent, targets.accent1)
     }
 
-    // Tertiary accent color. Primary color shifted to the next secondary color via hue offset.
+    // Tertiary accent color. Seed color shifted to the next secondary color via hue offset.
     override val accent3 by lazy(mode = LazyThreadSafetyMode.NONE) {
-        transformSwatch(targetColors.accent3, primaryAccent) { lch ->
-            lch.copy(h = lch.h + ACCENT3_HUE_SHIFT_DEGREES)
-        }
+        val seedA3 = seedAccent.copy(h = seedAccent.h + ACCENT3_HUE_SHIFT_DEGREES)
+        transformSwatch(targets.accent3, seedA3, targets.accent1)
+    }
+
+    // Main background color. Tinted with the seed color.
+    override val neutral1 by lazy(mode = LazyThreadSafetyMode.NONE) {
+        transformSwatch(targets.neutral1, seedNeutral, targets.neutral1)
+    }
+
+    // Secondary background color. Slightly tinted with the seed color.
+    override val neutral2 by lazy(mode = LazyThreadSafetyMode.NONE) {
+        transformSwatch(targets.neutral2, seedNeutral, targets.neutral1)
     }
 
     private fun transformSwatch(
-        swatch: Map<Int, Color>,
-        primary: Lch,
-        colorFilter: (Oklch) -> Oklch = { it },
-    ): Map<Int, Color> {
+        swatch: ColorSwatch,
+        seed: Lch,
+        referenceSwatch: ColorSwatch,
+    ): ColorSwatch {
         return swatch.map { (shade, color) ->
             val target = color as? Lch
                 ?: color.toLinearSrgb().toOklab().toOklch()
-            val targetLstar = TargetColors.LSTAR_LIGHTNESS_MAP[shade]!!
-            val newLch = colorFilter(transformColor(target, primary, targetLstar))
-            val newSrgb = newLch.toOklab().toLinearSrgb().toSrgb()
+            val reference = referenceSwatch[shade]!! as? Lch
+                ?: color.toLinearSrgb().toOklab().toOklch()
+            val newLch = transformColor(target, seed, reference)
+            val newSrgb = newLch.toLinearSrgb().toSrgb()
 
-            val newRgb8 = newSrgb.quantize8()
             shade to newSrgb
         }.toMap()
     }
 
-    private fun transformColor(target: Lch, primary: Lch, targetLstar: Double): Oklch {
-        // Allow colorless gray.
-        val C = primary.C.coerceIn(0.0, target.C)
-        // Use the primary color's hue, since it's the most prominent feature of the theme.
-        val h = primary.h
-        // Binary search for the target lightness for accuracy
-        val L = if (accurateShades) {
-            searchLstar(targetLstar, C, h)
+    private fun transformColor(target: Lch, seed: Lch, reference: Lch): Color {
+        // Keep target lightness.
+        val L = target.L
+        // Allow colorless gray and low-chroma colors by clamping.
+        // To preserve chroma ratios, scale chroma by the reference (A-1 / N-1).
+        val scaleC = if (reference.C == 0.0) {
+            // Zero reference C won't have chroma anyway, so use 0 to avoid a divide-by-zero
+            0.0
         } else {
-            target.L
+            // Non-zero reference C = possible chroma scale
+            (seed.C.coerceIn(0.0, reference.C) / reference.C)
         }
+        val C = target.C * scaleC
+        // Use the seed color's hue, since it's the most prominent feature of the theme.
+        val h = seed.h
 
-        return Oklch(L, C, h)
-    }
-
-    private fun searchLstar(targetLstar: Double, C: Double, h: Double): Double {
-        // Some colors result in imperfect blacks (e.g. #000002) if we don't account for
-        // negative lightness.
-        var min = -0.5
-        // Colors can also be overexposed to better match CIELAB targets.
-        var max = 1.5
-
-        // Keep track of the best L value found.
-        // This will be returned if the search fails to converge.
-        var bestL = Double.NaN
-        var bestLDelta = Double.POSITIVE_INFINITY
-
-        while (true) {
-            val mid = (min + max) / 2
-
-            // The search must be done in 8-bpc sRGB to account for the effects of clipping.
-            // Otherwise, results at lightness extremes (especially ~shade 10) are quite far
-            // off after quantization and clipping.
-            val srgbClipped = Oklch(mid, C, h).toOklab().toLinearSrgb().toSrgb().quantize8()
-
-            // Convert back to Color and compare CIELAB L*
-            val lstar = Srgb(srgbClipped).toLinearSrgb().toCieXyz().toCieLab().L
-            val delta = abs(lstar - targetLstar)
-
-            if (delta < bestLDelta) {
-                bestL = mid
-                bestLDelta = delta
-            }
-
-            when {
-                // If L* ~= target, consider the result good enough
-                delta <= TARGET_LSTAR_THRESHOLD -> return mid
-                // If min ~= max, we're unlikely to make any more progress
-                abs(min - max) <= TARGET_L_EPSILON -> return bestL
-
-                // Divide and continue
-                lstar < targetLstar -> min = mid
-                lstar > targetLstar -> max = mid
-            }
-        }
+        return Oklch(L, C, h).toOklab().clipToLinearSrgb(
+            method = if (accurateShades) {
+                // Prefer lightness
+                OklabGamut.ClipMethod.PRESERVE_LIGHTNESS
+            } else {
+                // Prefer chroma
+                OklabGamut.ClipMethod.ADAPTIVE_TOWARDS_LCUSP
+            },
+            alpha = 5.0,
+        )
     }
 
     companion object {
         // Hue shift for the tertiary accent color (accent3), in degrees.
         // 60 degrees = shifting by a secondary color
         private const val ACCENT3_HUE_SHIFT_DEGREES = 60.0
-
-        // Threshold for matching CIELAB L* targets. Colors with lightness delta
-        // under this value are considered to match the reference lightness.
-        private const val TARGET_LSTAR_THRESHOLD = 0.01
-
-        // Threshold for terminating the binary search if min and max are too close.
-        // The search is very unlikely to make progress after this point, so we
-        // just terminate it and return the best L* value found.
-        private const val TARGET_L_EPSILON = 0.001
     }
 }

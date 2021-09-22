@@ -7,13 +7,14 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ScrollingView
+import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.utils.MDUtil.updatePadding
 import com.kieronquinn.monetcompat.R
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.extensions.getColorWithAlpha
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
+import dev.kdrag0n.monet.theme.ColorScheme
 import dev.kdrag0n.monet.theme.DynamicColorScheme
 
 /**
@@ -160,7 +161,7 @@ open class MonetToolbar: Toolbar, MonetColorsChangedListener {
 
     override fun onMonetColorsChanged(
         monet: MonetCompat,
-        monetColors: DynamicColorScheme,
+        monetColors: ColorScheme,
         isInitialChange: Boolean
     ) {
         setSecondaryBackground(isSecondaryBackground, true)

@@ -12,6 +12,7 @@ import androidx.appcompat.view.menu.ListMenuItemView
 import com.kieronquinn.monetcompat.core.MonetActivityAccessException
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
+import dev.kdrag0n.monet.theme.ColorScheme
 import dev.kdrag0n.monet.theme.DynamicColorScheme
 
 abstract class MonetCompatActivity : AppCompatActivity(), MonetColorsChangedListener {
@@ -88,7 +89,7 @@ abstract class MonetCompatActivity : AppCompatActivity(), MonetColorsChangedList
      *  or the user changes their wallpaper while the app is running.
      */
     @CallSuper
-    override fun onMonetColorsChanged(monet: MonetCompat, monetColors: DynamicColorScheme, isInitialChange: Boolean) {
+    override fun onMonetColorsChanged(monet: MonetCompat, monetColors: ColorScheme, isInitialChange: Boolean) {
         if(recreateMode && !isInitialChange){
             recreate()
             return

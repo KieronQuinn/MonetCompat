@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.core.MonetFragmentAccessException
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
+import dev.kdrag0n.monet.theme.ColorScheme
 import dev.kdrag0n.monet.theme.DynamicColorScheme
 
 abstract class MonetFragment: Fragment, MonetColorsChangedListener {
@@ -55,7 +56,7 @@ abstract class MonetFragment: Fragment, MonetColorsChangedListener {
      *  or the user changes their wallpaper while the app is running.
      */
     @CallSuper
-    override fun onMonetColorsChanged(monet: MonetCompat, monetColors: DynamicColorScheme, isInitialChange: Boolean){
+    override fun onMonetColorsChanged(monet: MonetCompat, monetColors: ColorScheme, isInitialChange: Boolean){
         //Left for future use if needed
     }
 

@@ -1,6 +1,7 @@
 package com.kieronquinn.monetcompat.core
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.WallpaperColors
 import android.app.WallpaperManager
 import android.content.BroadcastReceiver
@@ -23,8 +24,8 @@ import com.kieronquinn.monetcompat.extensions.isSameAs
 import com.kieronquinn.monetcompat.extensions.toArgb
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
 import dev.kdrag0n.monet.colors.Srgb
-import dev.kdrag0n.monet.theme.DynamicColorScheme
-import dev.kdrag0n.monet.theme.TargetColors
+import dev.kdrag0n.monet.factory.ColorSchemeFactory
+import dev.kdrag0n.monet.theme.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.resume
 
@@ -56,6 +57,51 @@ class MonetCompat private constructor(context: Context) {
         @JvmStatic
         @WallpaperTypes.WallpaperType
         var wallpaperSource = WallpaperTypes.WALLPAPER_SYSTEM
+
+        /**
+         *  Use the system swatch on Android 12+, instead of generating our own.
+         *  Disable this if you want guaranteed consistency between Android versions.
+         *
+         *  Note: You should call [updateMonetColors] after changing this field, if views are already
+         *  drawn. This field has no effect on Android versions lower than 12.
+         */
+        @JvmStatic
+        var useSystemColorsOnAndroid12 = true
+            set(value) {
+                field = value
+            }
+
+        /**
+         *  Use a custom [ColorSchemeFactory] to create colors. Use [ColorSchemeFactory.getFactory]
+         *  to create a factory, or extend it however you like.
+         *
+         *  You an use [ColorSchemeFactory] to use the ZCam gamut rather than OkLab, see
+         *  kdrag0n's [GLColorTest](https://github.com/kdrag0n/glcolortest) for more info.
+         *
+         *  Note: You should call [updateMonetColors] after changing this field, if views are already
+         *  drawn. This field has no effect on Android versions 12 or higher, with
+         *  [useSystemColorsOnAndroid12] `= true`
+         */
+        @JvmStatic
+        var colorSchemeFactory: ColorSchemeFactory? = null
+            set(value) {
+                field = value
+            }
+
+        /**
+         *  Prefer accurate shades over chroma. Set to false to prefer chroma.
+         *  See [DynamicColorScheme.transformColor]
+         *
+         *  Note: You should call [updateMonetColors] after changing this field, if views are already
+         *  drawn. This field has no effect on Android versions 12 or higher, with
+         *  [useSystemColorsOnAndroid12] `= true`
+         */
+        @JvmStatic
+        var accurateShades = true
+            set(value) {
+                field = value
+            }
+
 
         /**
          *  Set up MonetCompat with a given context. Due to the Configuration.uiMode being used,
@@ -132,6 +178,12 @@ class MonetCompat private constructor(context: Context) {
         }
     }
 
+    //Can't be lazy as it needs to be re-generated after overlay changes
+    @RequiresApi(Build.VERSION_CODES.S)
+    private val createSystemColorScheme = {
+        SystemColorScheme(context)
+    }
+
     private var monetColorsChangedListeners = mutableListOf<MonetColorsChangedListener>()
 
     /**
@@ -199,12 +251,12 @@ class MonetCompat private constructor(context: Context) {
         getDefaultColors()
     }
 
-    private var monetColors: DynamicColorScheme? = null
+    private var monetColors: ColorScheme? = null
     private var darkTheme: Boolean? = null
     private lateinit var theme: Resources.Theme
 
     /**
-     *  Gets the wallpaper primary color, creates a [DynamicColorScheme] with it (or use defaults),
+     *  Gets the wallpaper primary color, creates a [ColorScheme] with it (or use defaults),
      *  then calls out to all the listeners if it's different to the previous scheme.
      *
      *  Getting the wallpaper colors from [WallpaperManager] is recommended to be run on an I/O thread
@@ -218,7 +270,7 @@ class MonetCompat private constructor(context: Context) {
             if(debugLog){
                 Log.i(TAG, "Got wallpaper primary color #${Integer.toHexString(primaryColor)}")
             }
-            DynamicColorScheme(TargetColors(chromaMultiplier), Srgb(primaryColor), chromaMultiplier)
+            generateColorScheme(primaryColor)
         }else{
             if(debugLog){
                 Log.w(TAG, "Unable to get primary color from wallpaper, using default app colors")
@@ -260,7 +312,7 @@ class MonetCompat private constructor(context: Context) {
      *  Returns the full set of Monet colors produced, or the default if they've not been
      *  generated / can't be generated
      */
-    fun getMonetColors(): DynamicColorScheme {
+    fun getMonetColors(): ColorScheme {
         return monetColors ?: defaultColorScheme
     }
 
@@ -397,7 +449,7 @@ class MonetCompat private constructor(context: Context) {
         val listener = object: MonetColorsChangedListener {
             override fun onMonetColorsChanged(
                 monet: MonetCompat,
-                monetColors: DynamicColorScheme,
+                monetColors: ColorScheme,
                 isInitialChange: Boolean
             ) {
                 removeMonetColorsChangedListener(this)
@@ -422,10 +474,10 @@ class MonetCompat private constructor(context: Context) {
     }
 
     /**
-     *  Get a [DynamicColorScheme] instance for the [defaultPrimaryColor] and specified [chromaMultiplier]
+     *  Get a [ColorScheme] instance for the [defaultPrimaryColor] and specified [chromaMultiplier]
      */
-    private fun getDefaultColors(): DynamicColorScheme {
-        return DynamicColorScheme(TargetColors(chromaMultiplier), Srgb(defaultPrimaryColor!!), chromaMultiplier)
+    private fun getDefaultColors(): ColorScheme {
+        return generateColorScheme(defaultPrimaryColor!!)
     }
 
     /**
@@ -454,10 +506,13 @@ class MonetCompat private constructor(context: Context) {
      *  You can then implement [wallpaperColorPicker] to pick this from the list (if it's still
      *  available) to use in the Monet theming.
      *
-     *  **Note:** This list may be empty, if the wallpaper colors are unable to be extracted.
+     *  **Note:** This list may be empty, if the wallpaper colors are unable to be extracted, or
+     *  [useSystemColorsOnAndroid12] is enabled and the device is running Android 12+
      */
+    @SuppressLint("MissingPermission")
     suspend fun getAvailableWallpaperColors(): List<Int>? = withContext(Dispatchers.IO) {
         return@withContext when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useSystemColorsOnAndroid12 -> null
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 -> {
                 val wallpaperColors = wallpaperManager.getWallpaperColors(wallpaperSource)
                 wallpaperColors?.getColorOptions()
@@ -478,6 +533,21 @@ class MonetCompat private constructor(context: Context) {
     suspend fun getSelectedWallpaperColor(): Int? {
         val wallpaperColors = getAvailableWallpaperColors() ?: return null
         return wallpaperColorPicker.invoke(wallpaperColors)
+    }
+
+    private fun generateColorScheme(primaryColor: Int): ColorScheme {
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useSystemColorsOnAndroid12){
+            createSystemColorScheme()
+        }else{
+            colorSchemeFactory?.getColor(Srgb(primaryColor)) ?: run {
+                DynamicColorScheme(
+                    MaterialYouTargets(chromaMultiplier),
+                    Srgb(primaryColor),
+                    chromaMultiplier,
+                    accurateShades
+                )
+            }
+        }
     }
 
     /**

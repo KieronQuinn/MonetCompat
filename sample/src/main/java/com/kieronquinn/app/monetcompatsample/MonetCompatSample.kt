@@ -9,6 +9,8 @@ import com.kieronquinn.app.monetcompatsample.ui.screens.list.ListViewModelImpl
 import com.kieronquinn.app.monetcompatsample.ui.screens.material.MaterialViewModel
 import com.kieronquinn.app.monetcompatsample.ui.screens.root.RootSharedViewModel
 import com.kieronquinn.app.monetcompatsample.ui.screens.root.RootSharedViewModelImpl
+import com.kieronquinn.app.monetcompatsample.ui.screens.settings.SettingsBottomSheetViewModel
+import com.kieronquinn.app.monetcompatsample.ui.screens.settings.SettingsBottomSheetViewModelImpl
 import com.kieronquinn.app.monetcompatsample.utils.PreferenceUtils
 import com.kieronquinn.monetcompat.core.MonetCompat
 import org.koin.android.ext.koin.androidContext
@@ -24,6 +26,7 @@ class MonetCompatSample: Application() {
         viewModel { MaterialViewModel() }
         viewModel { AppCompatViewModel() }
         viewModel<ListViewModel>{ ListViewModelImpl() }
+        viewModel<SettingsBottomSheetViewModel>{ SettingsBottomSheetViewModelImpl(get()) }
     }
 
     override fun onCreate() {

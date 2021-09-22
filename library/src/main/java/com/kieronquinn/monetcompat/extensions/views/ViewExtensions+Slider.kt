@@ -12,12 +12,15 @@ import com.kieronquinn.monetcompat.extensions.getColorWithAlpha
  */
 fun Slider.applyMonet(): Slider = apply {
     val monet = MonetCompat.getInstance()
-    setTint(monet.getSecondaryColor(context), monet.getAccentColor(context))
+    setTint(monet.getSecondaryColor(context), monet.getAccentColor(context), monet.getPrimaryColor(context))
 }
 
-fun Slider.setTint(@ColorInt trackColor: Int, @ColorInt thumbColor: Int){
+fun Slider.setTint(@ColorInt trackColor: Int, @ColorInt thumbColor: Int, @ColorInt tickInactiveColor: Int? = null){
     trackInactiveTintList = ColorStateList.valueOf(getColorWithAlpha(trackColor, 0.35f))
     trackActiveTintList = ColorStateList.valueOf(trackColor)
     thumbTintList = ColorStateList.valueOf(thumbColor)
     haloTintList = ColorStateList.valueOf(getColorWithAlpha(thumbColor, 0.35f))
+    if(tickInactiveColor != null) {
+        tickInactiveTintList = ColorStateList.valueOf(tickInactiveColor)
+    }
 }
