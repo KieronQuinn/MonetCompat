@@ -30,6 +30,8 @@ Next, to apply Monet colors to views, check out the [Usage](https://github.com/K
 
 For more advanced usage, including explanations of other fields in MonetCompat, MonetCompatActivity and MonetFragment, see the [Advanced Usage](https://github.com/KieronQuinn/MonetCompat/wiki/3:-Advanced-Usage) page.
 
+For usage with Jetpack Compose follow the steps in the [Setup](https://github.com/KieronQuinn/MonetCompat/wiki/1:-Setup) and use MonetCompatDynamicTheme as a theme for your app.
+
 MonetCompat also includes a few prebuilt custom Views that implement Monet and Material You styles, as well as a custom stretch overscroll effect, like the one in Android 12. More info can be found on the [Material You](https://github.com/KieronQuinn/MonetCompat/wiki/4:-Material-You) page
 
 ## Apps using MonetCompat
