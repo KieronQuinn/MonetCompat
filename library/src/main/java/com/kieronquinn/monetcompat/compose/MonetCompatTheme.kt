@@ -28,6 +28,10 @@ private fun MonetCompat.getMonetAccentColor(type: Int, shade: Int): Color {
     return Color(monetColor)
 }
 
+/**
+ * Any values that are not set will be chosen to best represent default values given by [dynamicLightColorScheme][androidx.compose.material3.dynamicLightColorScheme]
+ * on Android 12+ devices
+ */
 @Composable
 fun MonetCompat.lightMonetCompatScheme(
     primary: Color = getMonetAccentColor(1, 700),
@@ -78,6 +82,10 @@ fun MonetCompat.lightMonetCompatScheme(
         outline = outline,
     )
 
+/**
+ * Any values that are not set will be chosen to best represent default values given by [dynamicDarkColorScheme][androidx.compose.material3.dynamicDarkColorScheme]
+ * on Android 12+ devices
+ */
 @Composable
 fun MonetCompat.darkMonetCompatScheme(
     primary: Color = getMonetAccentColor(1, 200),
@@ -128,8 +136,19 @@ fun MonetCompat.darkMonetCompatScheme(
         outline = outline,
     )
 
+/**
+ * Monet Compat Dynamic Theme aims to recreate dynamic color theme provided by [androidx.compose.material3]
+ *
+ * This theme will use default values chosen to best recreate values provided
+ * by default values of [dynamicDarkColorScheme][androidx.compose.material3.dynamicDarkColorScheme] and [lightColorScheme][androidx.compose.material3.lightColorScheme]
+ *
+ * If you want to set custom colors to certain values use [MonetCompat.darkMonetCompatScheme] and
+ * [MonetCompat.lightMonetCompatScheme] with [androidx.compose.material3.MaterialTheme]
+ *
+ * @param monet A monet object passed from your activity
+ */
 @Composable
-fun MonetCompatTheme(monet: MonetCompat, content: @Composable () -> Unit) {
+fun MonetCompatDynamicTheme(monet: MonetCompat, content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = if (isSystemInDarkTheme()) {
             monet.darkMonetCompatScheme()
