@@ -2,7 +2,7 @@
 
 ![MonetCompat](https://i.imgur.com/L5ku0DLl.png)
 
-![JitPack badge](https://jitpack.io/v/KieronQuinn/MonetCompat.svg)
+[![JitPack badge](https://jitpack.io/v/KieronQuinn/MonetCompat.svg)](https://jitpack.io/#kieronquinn/monetcompat)
 
 MonetCompat is an app-level implementation of kdrag0n's custom Monet implementation, based on his [android12-extensions module](https://github.com/kdrag0n/android12-extensions). With MonetCompat you can generate color palettes from a user's wallpaper and use them anywhere in your app. It supports Android 5.0 and above (in Palette compatibility mode) and Android 8.1 and above in normal mode.
 
