@@ -1,5 +1,6 @@
 package com.kieronquinn.monetcompat.compose
 
+import androidx.annotation.IntRange
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
@@ -11,20 +12,26 @@ import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.extensions.toArgb
 
 
-private fun MonetCompat.getMonetNeutralColor(type: Int, shade: Int): Color {
+private fun MonetCompat.getMonetNeutralColor(
+    @IntRange(from = 1, to = 2) type: Int,
+    @IntRange(from = 50, to = 900) shade: Int
+): Color {
     val monetColor = when (type) {
         1 -> this.getMonetColors().neutral1[shade]
         else -> this.getMonetColors().neutral2[shade]
-    }?.toArgb() ?: throw Exception("Neutral shade  doesn't exist")
+    }?.toArgb() ?: throw Exception("Neutral$type shade $shade doesn't exist")
     return Color(monetColor)
 }
 
-private fun MonetCompat.getMonetAccentColor(type: Int, shade: Int): Color {
+private fun MonetCompat.getMonetAccentColor(
+    @IntRange(from = 1, to = 3) type: Int,
+    @IntRange(from = 50, to = 900) shade: Int
+): Color {
     val monetColor = when (type) {
         1 -> this.getMonetColors().accent1[shade]
         2 -> this.getMonetColors().accent2[shade]
         else -> this.getMonetColors().accent3[shade]
-    }?.toArgb() ?: throw Exception("Accent shade  doesn't exist")
+    }?.toArgb() ?: throw Exception("Accent$type shade $shade doesn't exist")
     return Color(monetColor)
 }
 
