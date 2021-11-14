@@ -148,7 +148,9 @@ open class MonetToolbar: Toolbar, MonetColorsChangedListener {
         val currentBackground = (background as? ColorDrawable)?.color ?: monet.getBackgroundColor(context)
         backgroundAnimation = ValueAnimator.ofArgb(currentBackground, newBackground).apply {
             addUpdateListener {
-                background = ColorDrawable(it.animatedValue as Int)
+                val color = ColorDrawable(it.animatedValue as Int)
+                background = color
+                (parent as? AppBarLayout)?.background = color
             }
             duration = 250
             start()
