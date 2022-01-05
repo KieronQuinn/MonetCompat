@@ -26,6 +26,8 @@
             app:scrimVisibleHeightTrigger="@dimen/toolbar_scrim_visible_height"
             app:expandedTitleMarginStart="@dimen/toolbar_expanded_title_margin"
             app:expandedTitleMarginEnd="@dimen/toolbar_expanded_title_margin"
+            app:expandedTitleTextAppearance="@style/TextAppearance.CollapsingToolbar.Expanded"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.CollapsingToolbar.Collapsed"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:title="@string/app_name">
 
