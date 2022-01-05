@@ -5,6 +5,19 @@
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Kieron/Android/AndroidStudioWorkspace/MonetCompat/sample/src/main/res/layout/activity_main.xml" value="0.2502532928064843" />
+        <entry key="..\:/Users/Kieron/Android/AndroidStudioWorkspace/MonetCompat/sample/src/main/res/layout/fragment_bottom_sheet_color_picker.xml" value="0.4492753623188406" />
+        <entry key="..\:/Users/Kieron/Android/AndroidStudioWorkspace/MonetCompat/sample/src/main/res/layout/fragment_bottom_sheet_settings.xml" value="0.25" />
+        <entry key="..\:/Users/Kieron/Android/AndroidStudioWorkspace/MonetCompat/sample/src/main/res/layout/fragment_container.xml" value="0.4114921223354958" />
+        <entry key="..\:/Users/Kieron/Android/AndroidStudioWorkspace/MonetCompat/sample/src/main/res/layout/fragment_debug_palette.xml" value="0.2502532928064843" />
+        <entry key="..\:/Users/Kieron/Android/AndroidStudioWorkspace/MonetCompat/sample/src/main/res/layout/fragment_settings.xml" value="0.18611111111111112" />
+        <entry key="..\:/Users/Kieron/Android/AndroidStudioWorkspace/MonetCompat/sample/src/main/res/menu/menu_main.xml" value="0.5145833333333333" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

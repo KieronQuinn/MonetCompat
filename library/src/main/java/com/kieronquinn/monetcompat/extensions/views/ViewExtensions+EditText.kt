@@ -1,5 +1,6 @@
 package com.kieronquinn.monetcompat.extensions.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
@@ -45,6 +46,7 @@ fun EditText.setCursorHandleTint(@ColorInt color: Int){
     setHandlesColor(this, color)
 }
 
+@SuppressLint("SoonBlockedPrivateApi")
 @Suppress("DEPRECATION")
 private fun setCursorDrawableColor(editText: EditText, color: Int) {
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){

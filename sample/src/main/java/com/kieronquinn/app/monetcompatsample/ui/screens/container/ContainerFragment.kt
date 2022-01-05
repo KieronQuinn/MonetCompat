@@ -28,6 +28,7 @@ import com.kieronquinn.app.monetcompatsample.ui.screens.root.RootFragment
 import com.kieronquinn.app.monetcompatsample.ui.screens.root.RootSharedViewModel
 import com.kieronquinn.app.monetcompatsample.utils.TransitionUtils
 import com.kieronquinn.app.monetcompatsample.utils.extensions.navGraphViewModel
+import com.kieronquinn.monetcompat.extensions.views.applyMonet
 import com.kieronquinn.monetcompat.extensions.views.setTint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
@@ -80,6 +81,10 @@ class ContainerFragment: BoundFragment<FragmentContainerBinding>(FragmentContain
         val accent = monet.getAccentColor(requireContext())
         view?.setBackgroundColor(background)
         view?.findViewById<TabLayout>(R.id.tabs)?.setTint(accent)
+        view?.findViewById<BottomNavigationView>(R.id.bottom_nav)?.applyMonet(
+            setBackgroundColor = false,
+            md3Style = true
+        )
         view?.findViewById<BottomNavigationView>(R.id.bottom_nav)?.setTint(accent, secondaryBackground)
         return view
     }

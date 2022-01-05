@@ -11,6 +11,8 @@ import android.content.IntentFilter
 import android.content.res.Resources
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
@@ -28,6 +30,9 @@ import dev.kdrag0n.monet.factory.ColorSchemeFactory
 import dev.kdrag0n.monet.theme.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.resume
+import android.os.PatternMatcher
+import com.google.android.material.color.DynamicColors
+
 
 class MonetCompat private constructor(context: Context) {
 
@@ -35,6 +40,9 @@ class MonetCompat private constructor(context: Context) {
         private var INSTANCE: MonetCompat? = null
         private var paletteCompatEnabled = false
         private const val TAG = "MonetCompat"
+
+        //Hidden field in Intent
+        private const val ACTION_OVERLAY_CHANGED = "android.intent.action.OVERLAY_CHANGED"
 
         /**
          *  Set the multiplier of the chroma of the generated colors, defaults to `1.0`
@@ -70,6 +78,16 @@ class MonetCompat private constructor(context: Context) {
             set(value) {
                 field = value
             }
+
+        /**
+         *  Main switch for using system colors instead of the custom generation.
+         *  It requires: Android 12 or above, [useSystemColorsOnAndroid12] to be enabled and
+         *  [DynamicColors.isDynamicColorAvailable] to return that the device supports them.
+         */
+        private val useSystemColors
+            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                    useSystemColorsOnAndroid12 &&
+                    DynamicColors.isDynamicColorAvailable()
 
         /**
          *  Use a custom [ColorSchemeFactory] to create colors. Use [ColorSchemeFactory.getFactory]
@@ -117,7 +135,7 @@ class MonetCompat private constructor(context: Context) {
             }
             INSTANCE = MonetCompat(context).apply {
                 updateConfiguration(context)
-                registerWallpaperChangedReceiver(context)
+                registerWallpaperColorsChangedReceiver(context)
             }
             return INSTANCE!!
         }
@@ -172,11 +190,17 @@ class MonetCompat private constructor(context: Context) {
         context.getSystemService(Context.WALLPAPER_SERVICE) as WallpaperManager
     }
 
-    private val wallpaperChangedReceiver = object: BroadcastReceiver() {
+    private val colorsChangedReceiver = object: BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             updateMonetColorsInternal()
         }
     }
+
+    private val colorsChangedListener by lazy {
+        WallpaperManager.OnColorsChangedListener { _, _ -> updateMonetColorsInternal() }
+    }
+
+    private val colorsChangedHandler = Handler(Looper.getMainLooper())
 
     //Can't be lazy as it needs to be re-generated after overlay changes
     @RequiresApi(Build.VERSION_CODES.S)
@@ -266,16 +290,22 @@ class MonetCompat private constructor(context: Context) {
     private fun updateMonetColorsInternal(isUiModeChange: Boolean = false) = GlobalScope.launch(Dispatchers.IO) {
         val primaryColor = getWallpaperPrimaryColorCompat()
         wallpaperPrimaryColor = primaryColor
-        val newMonetColors = if(primaryColor != null){
-            if(debugLog){
-                Log.i(TAG, "Got wallpaper primary color #${Integer.toHexString(primaryColor)}")
+        val newMonetColors = when {
+            useSystemColors -> {
+                getDefaultColors()
             }
-            generateColorScheme(primaryColor)
-        }else{
-            if(debugLog){
-                Log.w(TAG, "Unable to get primary color from wallpaper, using default app colors")
+            primaryColor != null -> {
+                if(debugLog){
+                    Log.i(TAG, "Got wallpaper primary color #${Integer.toHexString(primaryColor)}")
+                }
+                generateColorScheme(primaryColor)
             }
-            defaultColorScheme
+            else -> {
+                if(debugLog){
+                    Log.w(TAG, "Unable to get primary color from wallpaper, using default app colors")
+                }
+                defaultColorScheme
+            }
         }
         val hasChanged = isUiModeChange || !newMonetColors.isSameAs(monetColors)
         val isInitialChange = monetColors == null
@@ -463,14 +493,33 @@ class MonetCompat private constructor(context: Context) {
     }
 
     /**
-     *  Adds a BroadcastReceiver for ACTION_WALLPAPER_CHANGED to automatically update the colors
-     *  when the wallpaper is changed
+     *  - On Android 12+ with [useSystemColorsOnAndroid12] enabled: Registers a listener for the
+     *  system colors changing (via a hidden Overlay Changed action) to change the colors when
+     *  the system ones change.
+     *  - On Android 8.1+: Adds a listener for wallpaper color changes using
+     *  [WallpaperManager.addOnColorsChangedListener].
+     *  - On Android 8.0 and below: Adds a BroadcastReceiver for ACTION_WALLPAPER_CHANGED to
+     *  change the colors when the wallpaper is changed.
+     *
      *  ACTION_WALLPAPER_CHANGED is deprecated (but still works) - we can't use FLAG_SHOW_WALLPAPER
-     *  as it's not suitable for our use case
+     *  as it's not suitable for our use case.
      */
-    private fun registerWallpaperChangedReceiver(context: Context){
-        @Suppress("DEPRECATION")
-        context.registerReceiver(wallpaperChangedReceiver, IntentFilter(Intent.ACTION_WALLPAPER_CHANGED))
+    private fun registerWallpaperColorsChangedReceiver(context: Context){
+        when {
+            useSystemColors -> {
+                val packageFilter = IntentFilter(ACTION_OVERLAY_CHANGED)
+                packageFilter.addDataScheme("package")
+                packageFilter.addDataSchemeSpecificPart("android", PatternMatcher.PATTERN_LITERAL)
+                context.registerReceiver(colorsChangedReceiver, packageFilter, null, colorsChangedHandler)
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 -> {
+                wallpaperManager.addOnColorsChangedListener(colorsChangedListener, colorsChangedHandler)
+            }
+            else -> {
+                @Suppress("DEPRECATION")
+                context.registerReceiver(colorsChangedReceiver, IntentFilter(Intent.ACTION_WALLPAPER_CHANGED), null, colorsChangedHandler)
+            }
+        }
     }
 
     /**
@@ -512,7 +561,7 @@ class MonetCompat private constructor(context: Context) {
     @SuppressLint("MissingPermission")
     suspend fun getAvailableWallpaperColors(): List<Int>? = withContext(Dispatchers.IO) {
         return@withContext when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useSystemColorsOnAndroid12 -> null
+            useSystemColors -> null
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 -> {
                 val wallpaperColors = wallpaperManager.getWallpaperColors(wallpaperSource)
                 wallpaperColors?.getColorOptions()
@@ -536,7 +585,7 @@ class MonetCompat private constructor(context: Context) {
     }
 
     private fun generateColorScheme(primaryColor: Int): ColorScheme {
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useSystemColorsOnAndroid12){
+        return if(useSystemColors){
             createSystemColorScheme()
         }else{
             colorSchemeFactory?.getColor(Srgb(primaryColor)) ?: run {
