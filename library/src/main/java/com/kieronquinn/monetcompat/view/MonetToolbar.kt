@@ -10,12 +10,12 @@ import androidx.core.view.ScrollingView
 import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
 import com.kieronquinn.monetcompat.R
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.extensions.getColorWithAlpha
 import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
 import dev.kdrag0n.monet.theme.ColorScheme
-import dev.kdrag0n.monet.theme.DynamicColorScheme
 
 /**
  *  A [Toolbar] that has Monet's [MonetCompat.getBackgroundColor] when the scrollable view on-screen
