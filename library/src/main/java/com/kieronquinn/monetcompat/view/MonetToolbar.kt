@@ -11,6 +11,7 @@ import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.kieronquinn.monetcompat.R
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.kieronquinn.monetcompat.extensions.getColorWithAlpha
@@ -18,12 +19,12 @@ import com.kieronquinn.monetcompat.interfaces.MonetColorsChangedListener
 import dev.kdrag0n.monet.theme.ColorScheme
 
 /**
- *  A [Toolbar] that has Monet's [MonetCompat.getBackgroundColor] when the scrollable view on-screen
+ *  A [MaterialToolbar] that has Monet's [MonetCompat.getBackgroundColor] when the scrollable view on-screen
  *  is not scrolled, and [MonetCompat.getBackgroundColorSecondary] when scrolled. The secondary
  *  background color has transparency of [secondaryBackgroundAlpha] (default 85%), allowing you to
  *  see the scrolled list content behind it. Elevation is also disabled.
  */
-open class MonetToolbar: Toolbar, MonetColorsChangedListener {
+open class MonetToolbar: MaterialToolbar, MonetColorsChangedListener {
 
     /**
      *  The alpha ratio of the [Toolbar] when there is a scrolled list showing under it. Defaults to

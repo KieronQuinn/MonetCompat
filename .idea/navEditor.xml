@@ -35,6 +35,11 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="action_global_listFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="action_global_materialFragment">
                     <value>
                       <LayoutPositions />
@@ -76,6 +81,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="settingsBottomSheetFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="84" />
+                            <option name="y" value="387" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                 </map>
               </option>
             </LayoutPositions>
@@ -109,7 +126,17 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_containerFragment_to_colorPickerBottomSheetFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_containerFragment_to_debugPaletteFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_containerFragment_to_settingsBottomSheetFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -126,6 +153,18 @@
                           <Point>
                             <option name="x" value="220" />
                             <option name="y" value="14" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="settingsBottomSheetFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="234" />
+                            <option name="y" value="322" />
                           </Point>
                         </option>
                       </LayoutPositions>

@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MonetCompat" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.MonetCompat" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="android:colorAccent">@color/accent</item>
@@ -41,5 +41,11 @@
     <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bottom_sheet_rounded_bg</item>
     </style>
+
+    <style name="TextAppearance.CollapsingToolbar.Expanded" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="TextAppearance.CollapsingToolbar.Collapsed" parent="TextAppearance.AppCompat.Widget.ActionBar.Title"/>
 
 </resources>
