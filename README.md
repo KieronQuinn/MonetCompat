@@ -42,6 +42,8 @@ MonetCompat also includes a few prebuilt custom Views that implement Monet and M
 
 [Classic Power Menu](https://github.com/KieronQuinn/ClassicPowerMenu)
 
+[Tap, Tap](https://github.com/KieronQuinn/TapTap)
+
 [DotOS](https://www.xda-developers.com/dotos-5-2-adds-many-android-12-features/) (Custom ROM)
 
 [No'me - Launcher Manager](https://play.google.com/store/apps/details?id=com.flea.gsd.flea)
